@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <VBox prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="NoServiceDesk">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label text="Licensed to: The Garden Group" />
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="Dashboard">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Incident Management">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="User Management">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </VBox>
+   </top>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Current Incidents">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="100.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Button mnemonicParsing="false" style="-fx-background-color: DODGERBLUE;" text="Show List" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="100.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="20.0" top="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: DARKORANGE;">
+                     <children>
+                        <Label text="0/0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <PieChart startAngle="-90.0" title="Unresolved Incidents" />
+                        <Label minHeight="50.0" text="All tickets currently open" wrapText="true" />
+                     </children>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: CRIMSON;">
+                     <children>
+                        <Label text="0/0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <PieChart startAngle="-90.0" title="Incidents Past Deadline" />
+                        <Label minHeight="50.0" text="These tickets need your immediant attention" textAlignment="CENTER" wrapText="true" />
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="50.0" />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+</BorderPane>
