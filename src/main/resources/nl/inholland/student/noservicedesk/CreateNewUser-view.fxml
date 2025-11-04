@@ -139,7 +139,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" text="cancel">
+                  <Button mnemonicParsing="false" style="-fx-background-color: SALMON;" text="cancel" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
