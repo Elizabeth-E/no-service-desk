@@ -4,7 +4,15 @@ module nl.inholland.student.noservicedesk {
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
+    requires java.desktop;
+    requires org.mongodb.bson;
+    requires org.mongodb.driver.core;
+    requires org.mongodb.driver.sync.client;
 
     opens nl.inholland.student.noservicedesk to javafx.fxml;
     exports nl.inholland.student.noservicedesk;
+    exports nl.inholland.student.noservicedesk.Controllers;
+    opens nl.inholland.student.noservicedesk.Controllers to javafx.fxml;
+    exports nl.inholland.student.noservicedesk.config;
+    opens nl.inholland.student.noservicedesk.config to javafx.fxml;
 }

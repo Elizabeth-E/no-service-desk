@@ -36,3 +36,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+
+/src/main/java/nl/inholland/student/noservicedesk/config/ConfigEncryptor.java
+/src/main/java/nl/inholland/student/noservicedesk/config/ConfigLoader.java
+/src/main/resources/config.properties
