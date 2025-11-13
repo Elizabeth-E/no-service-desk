@@ -1,7 +1,12 @@
 package nl.inholland.student.noservicedesk;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import nl.inholland.student.noservicedesk.Controllers.MainViewController;
 import nl.inholland.student.noservicedesk.database.MongoDB;
@@ -18,21 +23,16 @@ public class NoServiceDeskApplication{
     }
 
     public static void startNoDesk(Stage stage) throws IOException {
-       //this context is for the decrypted config file
         AppContext appContext = context;
         MongoDB db = new MongoDB(appContext);
         ServiceManager serviceManager = new ServiceManager(db);
-
-        try {
-            db.connectDB();
-        } catch (Exception ex) {
-            System.out.println("Database connection failed: " + ex.getMessage());
-        }
+        MainViewController controller;
 
         FXMLLoader fxmlLoader = new FXMLLoader(NoServiceDeskApplication.class.getResource("/nl/inholland/student/noservicedesk/NoServiceDeskLogin-view.fxml"));
-        MainViewController mainViewController = new MainViewController(stage, serviceManager);
-        fxmlLoader.setController(mainViewController);
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load(), 600, 600);
+        controller = fxmlLoader.getController();
+        controller.setStage(stage);
+        controller.setServiceManager(serviceManager);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
