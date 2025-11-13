@@ -37,7 +37,7 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: DARKORANGE;">
                      <children>
-                        <Label text="0/0">
+                        <Label fx:id="unresolvedIncidentsLabel" text="0/0">
                            <font>
                               <Font size="18.0" />
                            </font>

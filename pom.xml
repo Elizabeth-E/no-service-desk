@@ -72,6 +72,11 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
         </dependency>
+        <dependency>
+            <groupId>at.favre.lib</groupId>
+            <artifactId>bcrypt</artifactId>
+            <version>0.10.2</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>
@@ -105,6 +110,17 @@
                         <goals>
                             <goal>java</goal>
                         </goals>
+
+                        <configuration>
+                            <mainClass>nl.inholland.student.noservicedesk.config.ConfigEncryptor</mainClass>
+                            <arguments> <!-- input -->
+                                <argument>${project.basedir}/src/main/resources/config.properties
+                                </argument> <!-- output -->
+                                <argument>${project.build.outputDirectory}/config.enc
+                                </argument> <!-- AES key (Base64) -->
+                                <argument>T0VGa0X2WLDpO7WO5b8G+BVG40WToBUgNHBllLGJC6s=</argument>
+                            </arguments>
+                        </configuration>
 
                     </execution>
                 </executions>

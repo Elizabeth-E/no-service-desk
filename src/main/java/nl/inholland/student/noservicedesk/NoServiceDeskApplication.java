@@ -1,17 +1,16 @@
 package nl.inholland.student.noservicedesk;
 
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import nl.inholland.student.noservicedesk.Controllers.MainViewController;
+import nl.inholland.student.noservicedesk.database.MongoDB;
+import nl.inholland.student.noservicedesk.services.ServiceManager;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.Properties;
 
 public class NoServiceDeskApplication{
-    private static AppContext context;  // only a reference before launch
+    private static AppContext context;
 
     public static void launchWithContext(AppContext ctx, Stage stage) throws IOException {
         context = ctx;
@@ -19,18 +18,20 @@ public class NoServiceDeskApplication{
     }
 
     public static void startNoDesk(Stage stage) throws IOException {
-        // instance-level reference
-        AppContext appContext = context;          // inject into instance
-        //context = null;
+       //this context is for the decrypted config file
+        AppContext appContext = context;
+        MongoDB db = new MongoDB(appContext);
+        ServiceManager serviceManager = new ServiceManager(db);
 
         try {
-            MongoDB db = new MongoDB(appContext);
             db.connectDB();
         } catch (Exception ex) {
-            System.out.println("Decryption failed: wrong key: " + ex.getMessage());
+            System.out.println("Database connection failed: " + ex.getMessage());
         }
 
-        FXMLLoader fxmlLoader = new FXMLLoader(NoServiceDeskApplication.class.getResource("NoServiceDeskLogin-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(NoServiceDeskApplication.class.getResource("/nl/inholland/student/noservicedesk/NoServiceDeskLogin-view.fxml"));
+        MainViewController mainViewController = new MainViewController(stage, serviceManager);
+        fxmlLoader.setController(mainViewController);
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Hello!");
         stage.setScene(scene);

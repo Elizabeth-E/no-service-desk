@@ -8,6 +8,8 @@ module nl.inholland.student.noservicedesk {
     requires org.mongodb.bson;
     requires org.mongodb.driver.core;
     requires org.mongodb.driver.sync.client;
+    requires javafx.graphics;
+    requires bcrypt;
 
     opens nl.inholland.student.noservicedesk to javafx.fxml;
     exports nl.inholland.student.noservicedesk;
@@ -15,4 +17,6 @@ module nl.inholland.student.noservicedesk {
     opens nl.inholland.student.noservicedesk.Controllers to javafx.fxml;
     exports nl.inholland.student.noservicedesk.config;
     opens nl.inholland.student.noservicedesk.config to javafx.fxml;
+    exports nl.inholland.student.noservicedesk.database;
+    opens nl.inholland.student.noservicedesk.database to javafx.fxml;
 }
