@@ -25,7 +25,7 @@ public class NoServiceDeskApplication{
 
         try {
             MongoDB db = new MongoDB(appContext);
-            db.ConnectDB();
+            db.connectDB();
         } catch (Exception ex) {
             System.out.println("Decryption failed: wrong key: " + ex.getMessage());
         }
