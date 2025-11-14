@@ -2,11 +2,14 @@ package nl.inholland.student.noservicedesk.Controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import nl.inholland.student.noservicedesk.Models.Subject;
 import nl.inholland.student.noservicedesk.Models.Ticket;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
 import nl.inholland.student.noservicedesk.services.TicketService;
@@ -20,6 +23,8 @@ public class TicketsOverviewController {
     private MainViewController mainViewController;
 
 
+    @FXML
+    private ComboBox<Subject> ticketSubjects;
     @FXML
     private TableView<Ticket> ticketsTableview;
     @FXML
@@ -35,7 +40,9 @@ public class TicketsOverviewController {
     @FXML
     private TableColumn<Ticket, Boolean> isResolvedColumn;
 
-
+    public void buildForm() {
+        ticketSubjects.getItems().setAll(Subject.values());
+    }
 
     public TicketsOverviewController() {
     }
@@ -60,7 +67,6 @@ public class TicketsOverviewController {
         ticketService = serviceManager.getTicketService();
         List<Ticket> tickets = ticketService.getAllTickets();
 
-        /// TODO This is NULL
         ObservableList<Ticket> ticketsOverview = FXCollections.observableArrayList(tickets);
 
         ticketsTableview.setItems(ticketsOverview);
@@ -70,4 +76,7 @@ public class TicketsOverviewController {
         this.mainViewController = mainViewController;
     }
 
+    public void onCreateIncidentButtonClick(ActionEvent event) {
+        mainViewController.loadCreateIncident();
+    }
 }

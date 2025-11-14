@@ -28,7 +28,7 @@
                         <Font size="16.0" />
                      </font>
                   </TextField>
-                  <Button mnemonicParsing="false" style="-fx-background-color: DODGERBLUE;" text="Create Incident" textFill="WHITE">
+                  <Button fx:id="createIncident" mnemonicParsing="false" onAction="#onCreateIncidentButtonClick" style="-fx-background-color: DODGERBLUE;" text="Create Incident" textFill="WHITE">
                      <font>
                         <Font size="16.0" />
                      </font>
