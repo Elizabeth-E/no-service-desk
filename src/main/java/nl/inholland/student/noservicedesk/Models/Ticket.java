@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Ticket {
     private String _id;
-    private LocalDateTime date_created;
-    private LocalDateTime deadline;
+    private String date_created;
+    private String deadline;
     private String subject;
     private String description;
     private String priority;
@@ -16,6 +16,8 @@ public class Ticket {
     private boolean is_resolved;
     private String reported_by;
 
+    public Ticket() {
+    }
 
     public String getId() {
         return _id;
@@ -25,19 +27,19 @@ public class Ticket {
         this._id = id;
     }
 
-    public LocalDateTime getDate_created() {
+    public String getDate_created() {
         return date_created;
     }
 
-    public void setDate_created(LocalDateTime date_created) {
+    public void setDate_created(String date_created) {
         this.date_created = date_created;
     }
 
-    public LocalDateTime getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDateTime deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 

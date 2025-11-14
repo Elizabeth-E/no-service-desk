@@ -1,6 +1,7 @@
 package nl.inholland.student.noservicedesk.database;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -62,17 +63,48 @@ public class MongoDB {
         List<Ticket> tickets = new ArrayList<>();
 
         for (Document doc : ticketCollection.find()) {
+            // Convert BSON -> JSON -> Document again so we can manipulate it
+            Document normalized = Document.parse(doc.toJson());
+
+            // --- FIX DATE FIELDS: unwrap {$date: "..."} ---
+            normalized.put("date_created",
+                    getMongoDateString(normalized.get("date_created")));
+
+            normalized.put("deadline",
+                    getMongoDateString(normalized.get("deadline")));
+
+            // --- FIX ObjectId fields too ---
+            normalized.put("_id", getMongoObjectIdString(normalized.get("_id")));
+            normalized.put("reported_by", getMongoObjectIdString(normalized.get("reported_by")));
+
+            // Convert into Ticket object
             try {
-                // Convert Document -> JSON string -> Ticket object
-                Ticket ticket = objectMapper.readValue(doc.toJson(), Ticket.class);
+                Ticket ticket = objectMapper.readValue(normalized.toJson(), Ticket.class);
                 tickets.add(ticket);
-            } catch (Exception e) {
+            } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         }
 
         return tickets;
     }
+
+    // Helper to unwrap Mongo's date object
+    private String getMongoDateString(Object value) {
+        if (value instanceof Document d) {
+            return d.getString("$date");
+        }
+        return value != null ? value.toString() : null;
+    }
+
+    // Helper to unwrap Mongo's ObjectId
+    private String getMongoObjectIdString(Object value) {
+        if (value instanceof Document d) {
+            return d.getString("$oid");
+        }
+        return value != null ? value.toString() : null;
+    }
+
 
     // UPDATE
     public void updateTicket(String id, Document updatedFields) {

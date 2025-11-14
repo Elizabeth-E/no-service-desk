@@ -5,12 +5,13 @@ import nl.inholland.student.noservicedesk.database.MongoDB;
 public class ServiceManager {
     private final MongoDB db;
 
-    private final UserService userService;
-    private final TicketService ticketService;
-    private final HandledTicketsService handledTicketsService;
+    public final UserService userService;
+    public final TicketService ticketService;
+    public final HandledTicketsService handledTicketsService;
 
     public ServiceManager(MongoDB db) {
         this.db = db;
+        db.connectDB();
 
         // Create all services here
         this.userService = new UserService(db);

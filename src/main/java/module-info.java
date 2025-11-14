@@ -21,4 +21,6 @@ module nl.inholland.student.noservicedesk {
     opens nl.inholland.student.noservicedesk.config to javafx.fxml;
     exports nl.inholland.student.noservicedesk.database;
     opens nl.inholland.student.noservicedesk.database to javafx.fxml;
+    exports nl.inholland.student.noservicedesk.Models;
+    opens nl.inholland.student.noservicedesk.Models to com.fasterxml.jackson.databind;
 }

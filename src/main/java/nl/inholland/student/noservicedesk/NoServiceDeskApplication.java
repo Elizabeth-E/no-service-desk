@@ -23,17 +23,14 @@ public class NoServiceDeskApplication{
         MongoDB db = new MongoDB(appContext);
         ServiceManager serviceManager = new ServiceManager(db);
 
-        try {
-            db.connectDB();
-        } catch (Exception ex) {
-            System.out.println("Database connection failed: " + ex.getMessage());
-        }
+        MainViewController controller;
 
         FXMLLoader fxmlLoader = new FXMLLoader(NoServiceDeskApplication.class.getResource("/nl/inholland/student/noservicedesk/NoServiceDeskLogin-view.fxml"));
-        MainViewController mainViewController = new MainViewController(stage, serviceManager);
-        fxmlLoader.setController(mainViewController);
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        Scene scene = new Scene(fxmlLoader.load(), 800, 800);
+        controller = fxmlLoader.getController();
+        controller.setStage(stage);
+        controller.setServiceManager(serviceManager);
+        stage.setTitle("Welcome to NoServiceDesk");
         stage.setScene(scene);
         stage.show();
     }

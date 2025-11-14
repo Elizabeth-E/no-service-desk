@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.inholland.student.noservicedesk.Controllers.TicketsOverviewController">
     <top>
         <Pane maxHeight="100.0" BorderPane.alignment="CENTER">
             <children>
@@ -41,14 +41,14 @@
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </HBox>
-            <TableView>
+            <TableView fx:id="ticketsTableview">
               <columns>
-                <TableColumn prefWidth="47.0" text="ID" />
-                <TableColumn prefWidth="135.0" text="Subject" />
-                  <TableColumn prefWidth="82.0" text="User" />
-                  <TableColumn prefWidth="125.0" text="Date Reported" />
-                  <TableColumn minWidth="0.0" prefWidth="75.0" text="Due" />
-                  <TableColumn prefWidth="95.0" text="Status" />
+                <TableColumn fx:id="idColumn" prefWidth="47.0" text="ID" />
+                <TableColumn fx:id="subjectColumn" prefWidth="135.0" text="Subject" />
+                  <TableColumn fx:id="userColumn" prefWidth="82.0" text="User" />
+                  <TableColumn fx:id="dateReportedColumn" prefWidth="125.0" text="Date Reported" />
+                  <TableColumn fx:id="dueColumn" minWidth="0.0" prefWidth="75.0" text="Due" />
+                  <TableColumn fx:id="isResolvedColumn" prefWidth="95.0" text="IsResolved" />
               </columns>
             </TableView>
          </children>
