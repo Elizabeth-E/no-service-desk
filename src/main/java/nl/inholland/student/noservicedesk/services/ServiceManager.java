@@ -30,8 +30,4 @@ public class ServiceManager {
     public HandledTicketsService getHandledTicketsService() {
         return handledTicketsService;
     }
-
-    public void conndb() {
-        db.connectDB();
-    }
 }
