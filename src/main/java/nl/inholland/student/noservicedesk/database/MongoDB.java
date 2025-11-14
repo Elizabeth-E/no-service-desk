@@ -1,13 +1,18 @@
 package nl.inholland.student.noservicedesk.database;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import nl.inholland.student.noservicedesk.AppContext;
+import nl.inholland.student.noservicedesk.Models.Ticket;
 import org.bson.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -16,10 +21,14 @@ public class MongoDB {
     private MongoClient client;
     private MongoDatabase database;
 
+    private Ticket ticket;
+
     // Collections used throughout the application
     private MongoCollection<Document> ticketCollection;
     private MongoCollection<Document> userCollection;
     private MongoCollection<Document> handledTicketsCollection;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public MongoDB(AppContext context) {
         this.context = context;
@@ -49,8 +58,20 @@ public class MongoDB {
     }
 
     // READ (all)
-    public Iterable<Document> getAllTickets() {
-        return ticketCollection.find();
+    public List<Ticket> getAllTickets() {
+        List<Ticket> tickets = new ArrayList<>();
+
+        for (Document doc : ticketCollection.find()) {
+            try {
+                // Convert Document -> JSON string -> Ticket object
+                Ticket ticket = objectMapper.readValue(doc.toJson(), Ticket.class);
+                tickets.add(ticket);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return tickets;
     }
 
     // UPDATE

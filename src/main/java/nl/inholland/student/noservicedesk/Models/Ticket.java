@@ -1,41 +1,44 @@
 package nl.inholland.student.noservicedesk.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.LocalDateTime;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Ticket {
-    private String id;
-    private LocalDateTime dateCreated;
-    private LocalDateTime dueDate;
+    private String _id;
+    private LocalDateTime date_created;
+    private LocalDateTime deadline;
     private String subject;
     private String description;
     private String priority;
     private String status;
-    private boolean isResolved;
-    private String reportedBy;
+    private boolean is_resolved;
+    private String reported_by;
 
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this._id = id;
     }
 
-    public LocalDateTime getDateCreated() {
-        return dateCreated;
+    public LocalDateTime getDate_created() {
+        return date_created;
     }
 
-    public void setDateCreated(LocalDateTime dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setDate_created(LocalDateTime date_created) {
+        this.date_created = date_created;
     }
 
-    public LocalDateTime getDueDate() {
-        return dueDate;
+    public LocalDateTime getDeadline() {
+        return deadline;
     }
 
-    public void setDueDate(LocalDateTime dueDate) {
-        this.dueDate = dueDate;
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
     }
 
     public String getSubject() {
@@ -70,19 +73,19 @@ public class Ticket {
         this.status = status;
     }
 
-    public boolean isResolved() {
-        return isResolved;
+    public boolean isIs_resolved() {
+        return is_resolved;
     }
 
-    public void setResolved(boolean resolved) {
-        isResolved = resolved;
+    public void setIs_resolved(boolean is_resolved) {
+        this.is_resolved = is_resolved;
     }
 
-    public String getReportedBy() {
-        return reportedBy;
+    public String getReported_by() {
+        return reported_by;
     }
 
-    public void setReportedBy(String reportedBy) {
-        this.reportedBy = reportedBy;
+    public void setReported_by(String reported_by) {
+        this.reported_by = reported_by;
     }
 }

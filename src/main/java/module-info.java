@@ -10,6 +10,8 @@ module nl.inholland.student.noservicedesk {
     requires org.mongodb.driver.sync.client;
     requires javafx.graphics;
     requires bcrypt;
+    requires com.fasterxml.jackson.annotation;
+    requires com.fasterxml.jackson.databind;
 
     opens nl.inholland.student.noservicedesk to javafx.fxml;
     exports nl.inholland.student.noservicedesk;

@@ -18,8 +18,10 @@ public class DashboardController {
         this.serviceManager = services;;
     }
 
-    public void setTestLabel(){
+    public void buildDashboard() {
         unresolvedIncidentsLabel.setText("0/100");
+
     }
+
 
 }
