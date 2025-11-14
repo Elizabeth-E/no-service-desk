@@ -20,8 +20,8 @@ public class TicketsOverviewController {
     private MainViewController mainViewController;
 
 
-    //tableview ids
-    private TableView<Ticket> ticketsOverviewTable;
+    @FXML
+    private TableView<Ticket> ticketsTableview;
     @FXML
     private TableColumn<Ticket, String> idColumn;
     @FXML
@@ -63,7 +63,7 @@ public class TicketsOverviewController {
         /// TODO This is NULL
         ObservableList<Ticket> ticketsOverview = FXCollections.observableArrayList(tickets);
 
-        ticketsOverviewTable.setItems(ticketsOverview);
+        ticketsTableview.setItems(ticketsOverview);
     }
 
     public void setMainViewController(MainViewController mainViewController) {
