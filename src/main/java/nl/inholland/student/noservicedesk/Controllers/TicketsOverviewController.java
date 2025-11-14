@@ -9,8 +9,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import nl.inholland.student.noservicedesk.Models.Priority;
 import nl.inholland.student.noservicedesk.Models.Subject;
 import nl.inholland.student.noservicedesk.Models.Ticket;
+import nl.inholland.student.noservicedesk.Models.User;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
 import nl.inholland.student.noservicedesk.services.TicketService;
 
@@ -25,6 +27,10 @@ public class TicketsOverviewController {
 
     @FXML
     private ComboBox<Subject> ticketSubjects;
+    @FXML
+    private ComboBox<Priority> ticketPriorities;
+    @FXML
+    private ComboBox<String> reportedByUsers;
     @FXML
     private TableView<Ticket> ticketsTableview;
     @FXML
@@ -42,6 +48,14 @@ public class TicketsOverviewController {
 
     public void buildForm() {
         ticketSubjects.getItems().setAll(Subject.values());
+        ticketPriorities.getItems().setAll(Priority.values());
+
+        List<User> allUsers = this.serviceManager.getUserService().getAllUsers();
+        List<String> usernames = allUsers.stream()
+                .map(User::getFullName)
+                .toList();
+
+        reportedByUsers.getItems().setAll(usernames);
     }
 
     public TicketsOverviewController() {

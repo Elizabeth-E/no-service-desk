@@ -127,7 +127,7 @@
                      <font>
                         <Font size="16.0" />
                      </font></Label>
-                  <CheckBox mnemonicParsing="false" text="yes, a password email will be sent to the user">
+                  <CheckBox mnemonicParsing="false" text="yes, a password email_address will be sent to the user">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>

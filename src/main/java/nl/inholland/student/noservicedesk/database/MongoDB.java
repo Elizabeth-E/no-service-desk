@@ -10,6 +10,7 @@ import com.mongodb.client.MongoDatabase;
 
 import nl.inholland.student.noservicedesk.AppContext;
 import nl.inholland.student.noservicedesk.Models.Ticket;
+import nl.inholland.student.noservicedesk.Models.User;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -148,5 +149,27 @@ public class MongoDB {
         if (client != null) {
             client.close();
         }
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+
+        for (Document doc : userCollection.find()) {
+            // Convert BSON -> JSON -> Document again so we can manipulate it
+            Document normalized = Document.parse(doc.toJson());
+
+            // --- FIX ObjectId fields too ---
+            normalized.put("_id", getMongoObjectIdString(normalized.get("_id")));
+
+            // Convert into User object
+            try {
+                User user = objectMapper.readValue(normalized.toJson(), User.class);
+                users.add(user);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return users;
     }
 }

@@ -67,7 +67,7 @@
                         <Insets />
                      </VBox.margin>
                   </ComboBox>
-                  <ComboBox prefWidth="200.0" promptText="username...">
+                  <ComboBox fx:id="reportedByUsers" prefWidth="200.0" promptText="username...">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
