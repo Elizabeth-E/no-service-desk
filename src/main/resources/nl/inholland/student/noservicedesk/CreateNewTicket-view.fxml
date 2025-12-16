@@ -72,17 +72,17 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </ComboBox>
-                  <ComboBox prefWidth="200.0" promptText="priority...">
+                  <ComboBox fx:id="ticketPriorities" prefWidth="200.0" promptText="priority...">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </ComboBox>
-                  <ComboBox prefWidth="200.0" promptText="days until follow up ...">
+                  <ComboBox fx:id="followUpDeadline" prefWidth="200.0" promptText="days until follow up ...">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </ComboBox>
-                  <TextArea prefHeight="150.0" prefWidth="250.0">
+                  <TextArea fx:id="ticketDescription" prefHeight="150.0" prefWidth="250.0">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
@@ -106,7 +106,7 @@
                   <Insets right="50.0" top="20.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" style="-fx-background-color: DODGERBLUE;" text="submit ticket" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#onSubmitTicketButtonClick" style="-fx-background-color: DODGERBLUE;" text="submit ticket" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>

@@ -50,8 +50,13 @@ public class MongoDB {
     }
 
     // CREATE
-    public void createTicket(Document ticket) {
-        ticketCollection.insertOne(ticket);
+    public void createTicket(Ticket ticket) throws JsonProcessingException {
+        try {
+            Document doc = Document.parse(objectMapper.writeValueAsString(ticket));
+            ticketCollection.insertOne(doc);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // READ (get by ID)

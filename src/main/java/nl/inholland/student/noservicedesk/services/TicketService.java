@@ -61,5 +61,8 @@ public class TicketService {
         }
         return ticketsPastDue;
     }
+    public void createTicket(Ticket ticket) throws JsonProcessingException {
+        db.createTicket(ticket);
+    }
 
 }
