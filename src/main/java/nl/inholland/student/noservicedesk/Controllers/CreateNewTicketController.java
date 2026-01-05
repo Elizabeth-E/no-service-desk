@@ -36,6 +36,7 @@ public class CreateNewTicketController {
     private MainViewController mainViewController;
 
     public void setServiceManager(ServiceManager serviceManager) {this.serviceManager = serviceManager;}
+    public void setMainViewController(MainViewController mainViewController) {this.mainViewController = mainViewController;}
 
     public void buildCreateNewTicketForm() {
         ticketSubjects.getItems().setAll(Subject.values());
@@ -99,5 +100,4 @@ public class CreateNewTicketController {
         ticketDescription.clear();
     }
 
-    public void setMainViewController(MainViewController mainViewController) {this.mainViewController = mainViewController;}
 }

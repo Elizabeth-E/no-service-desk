@@ -2,26 +2,20 @@ package nl.inholland.student.noservicedesk.Controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import nl.inholland.student.noservicedesk.Models.Priority;
-import nl.inholland.student.noservicedesk.Models.Subject;
 import nl.inholland.student.noservicedesk.Models.Ticket;
-import nl.inholland.student.noservicedesk.Models.User;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
 import nl.inholland.student.noservicedesk.services.TicketService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class TicketsOverviewController {
     public BorderPane viewLayout;
     private ServiceManager serviceManager;
-    private Stage stage;
     private TicketService ticketService;
     private MainViewController mainViewController;
 
@@ -46,10 +40,6 @@ public class TicketsOverviewController {
 
     public void setServiceManager(ServiceManager serviceManager) {
         this.serviceManager = serviceManager;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
 
     public void fillTicketsTable(){

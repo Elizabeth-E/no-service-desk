@@ -10,7 +10,7 @@ import nl.inholland.student.noservicedesk.services.ServiceManager;
 
 public class MainViewController {
 
-    @FXML private BorderPane root; // must exist in Main-view.fxml as fx:id="viewLayout"
+    @FXML private BorderPane root;
 
     private Stage stage;
     private ServiceManager serviceManager;

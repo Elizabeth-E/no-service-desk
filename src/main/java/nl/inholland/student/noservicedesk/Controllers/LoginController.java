@@ -46,7 +46,6 @@ public class LoginController {
                 stage.setTitle("Dashboard");
                 stage.show();
 
-                // Put dashboard into center of BorderPane
                 main.showDashboard();
 
             } else {
