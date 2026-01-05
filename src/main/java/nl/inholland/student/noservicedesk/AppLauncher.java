@@ -33,7 +33,9 @@ public class AppLauncher extends Application {
 
         submit.setOnAction(e -> {
             try {
-                String base64Key = keyField.getText().trim();
+                //TODO: reset to manual input before submission
+                String base64Key = "T0VGa0X2WLDpO7WO5b8G+BVG40WToBUgNHBllLGJC6s=";
+                        //keyField.getText().trim();
                 if (base64Key.isEmpty()) {
                     errorLabel.setText("The key cannot be empty.");
                     return;
@@ -51,7 +53,8 @@ public class AppLauncher extends Application {
             } catch (IllegalArgumentException ex) {
                 errorLabel.setText("Invalid Base64 key.");
             } catch (Exception ex) {
-                errorLabel.setText("Decryption failed: wrong key.");
+                ex.printStackTrace();
+                errorLabel.setText("Failed: " + ex.getClass().getSimpleName() + " - " + ex.getMessage());
             }
         });
 

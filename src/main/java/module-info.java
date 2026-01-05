@@ -12,6 +12,7 @@ module nl.inholland.student.noservicedesk {
     requires bcrypt;
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.databind;
+    requires javafx.base;
 
     opens nl.inholland.student.noservicedesk to javafx.fxml;
     exports nl.inholland.student.noservicedesk;

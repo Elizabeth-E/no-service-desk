@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="root" fx:controller="nl.inholland.student.noservicedesk.Controllers.MainViewController" xmlns:fx="http://javafx.com/fxml">
+    <top>
+        <MenuBar>
+            <menus>
+                <Menu text="Navigate">
+                    <items>
+                        <MenuItem text="Dashboard" onAction="#showDashboard"/>
+                        <MenuItem text="Tickets" onAction="#showTickets"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+
+    <center>
+        <!-- center gets swapped -->
+    </center>
+</BorderPane>

@@ -3,6 +3,7 @@ package nl.inholland.student.noservicedesk;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import nl.inholland.student.noservicedesk.Controllers.LoginController;
 import nl.inholland.student.noservicedesk.Controllers.MainViewController;
 import nl.inholland.student.noservicedesk.database.MongoDB;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
@@ -18,20 +19,22 @@ public class NoServiceDeskApplication{
     }
 
     public static void startNoDesk(Stage stage) throws IOException {
-       //this context is for the decrypted config file
         AppContext appContext = context;
         MongoDB db = new MongoDB(appContext);
         ServiceManager serviceManager = new ServiceManager(db);
 
-        MainViewController controller;
+        FXMLLoader fxmlLoader = new FXMLLoader(NoServiceDeskApplication.class.getResource("NoServiceDeskLogin-view.fxml"));
 
-        FXMLLoader fxmlLoader = new FXMLLoader(NoServiceDeskApplication.class.getResource("/nl/inholland/student/noservicedesk/NoServiceDeskLogin-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 800);
-        controller = fxmlLoader.getController();
-        controller.setStage(stage);
+
+        // ✅ controller should match the login FXML fx:controller
+        LoginController controller = fxmlLoader.getController();
+
         controller.setServiceManager(serviceManager);
+
         stage.setTitle("Welcome to NoServiceDesk");
         stage.setScene(scene);
         stage.show();
     }
+
 }

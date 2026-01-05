@@ -8,6 +8,7 @@ import nl.inholland.student.noservicedesk.Models.Ticket;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
 import nl.inholland.student.noservicedesk.services.TicketService;
 
+import java.io.IOException;
 import java.util.List;
 
 public class DashboardController {
@@ -32,13 +33,9 @@ public class DashboardController {
 
         System.out.println("Dashboard loaded.");
 
-        //unresolvedIncidentsLabel.setText(ticketService.getUnresolvedTicketCount() +"/" + ticketList.size());
+        unresolvedIncidentsLabel.setText(ticketService.getUnresolvedTicketCount() +"/" + ticketList.size());
 
-        //incidentsPastDueLabel.setText(ticketService.getPastDeadlineCount() +"/" + ticketList.size());
-    }
-
-    public Stage getStage() {
-        return stage;
+        incidentsPastDueLabel.setText(ticketService.getPastDeadlineCount() +"/" + ticketList.size());
     }
 
     public void setStage(Stage stage) {
@@ -54,7 +51,7 @@ public class DashboardController {
     }
 
     @FXML
-    public void onShowListButton(ActionEvent event) {
-        mainViewController.showListLoadView();
+    public void onShowListButton(){
+        mainViewController.showTickets();
     }
 }

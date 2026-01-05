@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import nl.inholland.student.noservicedesk.Models.Priority;
 import nl.inholland.student.noservicedesk.Models.Subject;
@@ -18,22 +19,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class TicketsOverviewController {
+    public BorderPane viewLayout;
     private ServiceManager serviceManager;
     private Stage stage;
     private TicketService ticketService;
     private MainViewController mainViewController;
 
-
-    @FXML
-    private ComboBox<Subject> ticketSubjects;
-    @FXML
-    private ComboBox<Priority> ticketPriorities;
-    @FXML
-    private ComboBox<String> followUpDeadline;
-    @FXML
-    private TextArea ticketDescription;
-    @FXML
-    private ComboBox<String> reportedByUsers;
     @FXML
     private TableView<Ticket> ticketsTableview;
     @FXML
@@ -49,21 +40,6 @@ public class TicketsOverviewController {
     @FXML
     private TableColumn<Ticket, Boolean> isResolvedColumn;
 
-    public void buildForm() {
-        ticketSubjects.getItems().setAll(Subject.values());
-        ticketPriorities.getItems().setAll(Priority.values());
-
-        for (int i = 1; i <= 7; i++) {
-            followUpDeadline.getItems().add(i + "");
-        }
-
-        List<User> allUsers = this.serviceManager.getUserService().getAllUsers();
-        List<String> usernames = allUsers.stream()
-                .map(User::getFullName)
-                .toList();
-
-        reportedByUsers.getItems().setAll(usernames);
-    }
 
     public TicketsOverviewController() {
     }
@@ -97,53 +73,8 @@ public class TicketsOverviewController {
         this.mainViewController = mainViewController;
     }
 
-    public void onCreateIncidentButtonClick(ActionEvent event) {
-        mainViewController.loadCreateIncident();
+    public void onCreateIncidentButtonClick() {
+        mainViewController.showCreateIncident();
     }
 
-    public void onSubmitTicketButtonClick(ActionEvent event) {
-        ticketService = serviceManager.getTicketService();
-        Ticket ticket = new Ticket();
-
-        if (ticketSubjects.getValue() != null)
-            ticket.setSubject(ticketSubjects.getValue().toString());
-
-        if (ticketPriorities.getValue() != null)
-            ticket.setPriority(ticketPriorities.getValue().toString());
-
-        if (followUpDeadline.getValue() != null)
-            ticket.setDeadline(followUpDeadline.getValue());
-
-        if (ticketDescription.getText() != null)
-            ticket.setDescription(ticketDescription.getText());
-
-        if (reportedByUsers.getValue() != null)
-            ticket.setReported_by(reportedByUsers.getValue());
-
-        ticket.setDate_created(LocalDateTime.now().toString());
-        ticket.setStatus("Open");
-        ticket.setIs_resolved(false);
-
-        try {
-            ticketService.createTicket(ticket);
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Ticket Created");
-            alert.setHeaderText("Ticket Created");
-            alert.setContentText("Ticket Created Successfully");
-            alert.showAndWait();
-            clearTicketsInput();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void clearTicketsInput() {
-        ticketSubjects.getSelectionModel().clearSelection();
-        ticketPriorities.getSelectionModel().clearSelection();
-        followUpDeadline.getSelectionModel().clearSelection();
-        reportedByUsers.getSelectionModel().clearSelection();
-        ticketDescription.clear();
-    }
 }
