@@ -7,13 +7,21 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Aggregates.*;
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Projections.*;
+import static com.mongodb.client.model.UnwindOptions.*;
 
+import com.mongodb.client.model.Field;
+import com.mongodb.client.model.UnwindOptions;
 import nl.inholland.student.noservicedesk.AppContext;
 import nl.inholland.student.noservicedesk.Models.Ticket;
 import nl.inholland.student.noservicedesk.Models.User;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -49,7 +57,6 @@ public class MongoDB {
         System.out.println("Connected to MongoDB!");
     }
 
-    // CREATE
     public void createTicket(Ticket ticket) throws JsonProcessingException {
         try {
             Document doc = Document.parse(objectMapper.writeValueAsString(ticket));
@@ -59,27 +66,41 @@ public class MongoDB {
         }
     }
 
-    // READ (get by ID)
     public Document getTicketById(String id) {
         return ticketCollection.find(eq("_id", id)).first();
     }
 
-    // READ (all)
     public List<Ticket> getAllTickets() {
         List<Ticket> tickets = new ArrayList<>();
 
-        for (Document doc : ticketCollection.find()) {
-            // Convert BSON -> JSON -> Document again so we can manipulate it
+        List<Bson> pipeline = Arrays.asList(
+                lookup("User", "reported_by", "_id", "reporter"),
+                unwind("$reporter", new UnwindOptions().preserveNullAndEmptyArrays(true)),
+
+                // Create reported_by_name = "first_name last_name"
+                addFields(new Field<>("reported_by_name",
+                        new Document("$trim", new Document("input",
+                                new Document("$concat", Arrays.asList(
+                                        new Document("$ifNull", Arrays.asList("$reporter.first_name", "")),
+                                        " ",
+                                        new Document("$ifNull", Arrays.asList("$reporter.last_name", ""))
+                                ))
+                        ))
+                )),
+
+                project(fields(
+                        include("_id", "date_created", "deadline", "subject", "description", "priority",
+                                "status", "is_resolved", "reported_by", "reported_by_name")
+                ))
+        );
+
+        for (Document doc : ticketCollection.aggregate(pipeline)) {
+            // Convert BSON to JSON
             Document normalized = Document.parse(doc.toJson());
 
-            // --- FIX DATE FIELDS: unwrap {$date: "..."} ---
-            normalized.put("date_created",
-                    getMongoDateString(normalized.get("date_created")));
-
-            normalized.put("deadline",
-                    getMongoDateString(normalized.get("deadline")));
-
-            // --- FIX ObjectId fields too ---
+            // normalizing date and object id fields
+            normalized.put("date_created", getMongoDateString(normalized.get("date_created")));
+            normalized.put("deadline", getMongoDateString(normalized.get("deadline")));
             normalized.put("_id", getMongoObjectIdString(normalized.get("_id")));
             normalized.put("reported_by", getMongoObjectIdString(normalized.get("reported_by")));
 
@@ -91,7 +112,6 @@ public class MongoDB {
                 e.printStackTrace();
             }
         }
-
         return tickets;
     }
 
@@ -111,14 +131,11 @@ public class MongoDB {
         return value != null ? value.toString() : null;
     }
 
-
-    // UPDATE
     public void updateTicket(String id, Document updatedFields) {
         Document updateDoc = new Document("$set", updatedFields);
         ticketCollection.updateOne(eq("_id", id), updateDoc);
     }
 
-    // DELETE
     public void deleteTicket(String id) {
         ticketCollection.deleteOne(eq("_id", id));
     }
@@ -132,7 +149,6 @@ public class MongoDB {
 
         String storedHash = user.getString("password");
         storedHash = storedHash.replaceAll("\\s+", "");
-
 
         return verifyPassword(password, storedHash);
     }
@@ -149,7 +165,7 @@ public class MongoDB {
     }
 
 
-    // Close connection
+    // Close connection to db
     public void close() {
         if (client != null) {
             client.close();
@@ -160,10 +176,10 @@ public class MongoDB {
         List<User> users = new ArrayList<>();
 
         for (Document doc : userCollection.find()) {
-            // Convert BSON -> JSON -> Document again so we can manipulate it
+            // Convert BSON to JSON
             Document normalized = Document.parse(doc.toJson());
 
-            // --- FIX ObjectId fields too ---
+            // normalize object id
             normalized.put("_id", getMongoObjectIdString(normalized.get("_id")));
 
             // Convert into User object
@@ -174,7 +190,6 @@ public class MongoDB {
                 e.printStackTrace();
             }
         }
-
         return users;
     }
 }

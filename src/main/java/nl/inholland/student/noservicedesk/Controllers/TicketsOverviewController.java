@@ -46,7 +46,7 @@ public class TicketsOverviewController {
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("_id"));
         subjectColumn.setCellValueFactory(new PropertyValueFactory<>("subject"));
-        userColumn.setCellValueFactory(new PropertyValueFactory<>("reported_by"));
+        userColumn.setCellValueFactory(new PropertyValueFactory<>("reported_by_name"));
         dateReportedColumn.setCellValueFactory(new PropertyValueFactory<>("date_created"));
         dueColumn.setCellValueFactory(new PropertyValueFactory<>("deadline"));
         isResolvedColumn.setCellValueFactory(new PropertyValueFactory<>("is_resolved"));

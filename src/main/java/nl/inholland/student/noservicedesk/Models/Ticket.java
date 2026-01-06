@@ -1,11 +1,11 @@
 package nl.inholland.student.noservicedesk.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Ticket {
+    @JsonProperty("_id")
     private String _id;
     private String date_created;
     private String deadline;
@@ -15,15 +15,16 @@ public class Ticket {
     private String status;
     private boolean is_resolved;
     private String reported_by;
+    private String reported_by_name;
 
     public Ticket() {
     }
 
-    public String getId() {
+    public String get_id() {
         return _id;
     }
 
-    public void setId(String id) {
+    public void set_id(String id) {
         this._id = id;
     }
 
@@ -89,5 +90,13 @@ public class Ticket {
 
     public void setReported_by(String reported_by) {
         this.reported_by = reported_by;
+    }
+
+    public String getReported_by_name() {
+        return reported_by_name;
+    }
+
+    public void setReported_by_name(String reported_by_name) {
+        this.reported_by_name = reported_by_name;
     }
 }
