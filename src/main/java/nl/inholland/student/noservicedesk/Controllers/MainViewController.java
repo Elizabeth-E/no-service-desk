@@ -48,6 +48,18 @@ public class MainViewController {
     }
 
     @FXML
+    public void showCreateNewUser() {
+        setCenter("CreateNewUser-view.fxml", controller -> {
+            if (controller instanceof CreateNewUserController uc) {
+                uc.setServiceManager(serviceManager);
+                uc.setMainViewController(this);
+                //ucc.fillTicketsTable();
+            }
+        });
+        if (stage != null) stage.setTitle("Create User");
+    }
+
+    @FXML
     public void showCreateIncident() {
         setCenter("CreateNewTicket-view.fxml", controller -> {
             if (controller instanceof CreateNewTicketController cc) {

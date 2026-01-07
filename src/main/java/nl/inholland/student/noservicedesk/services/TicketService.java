@@ -2,7 +2,7 @@ package nl.inholland.student.noservicedesk.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import nl.inholland.student.noservicedesk.Models.Ticket;
-import nl.inholland.student.noservicedesk.database.MongoDB;
+import nl.inholland.student.noservicedesk.database.TicketRepository;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.Locale;
 
 public class TicketService {
-    private final MongoDB db;
+    private TicketRepository ticketRepository;
     private List<Ticket> ticketList;
 
-    public TicketService(MongoDB db) {
-        this.db = db;
+    public TicketService(TicketRepository ticketRepository) {
+        this.ticketRepository = ticketRepository;
     }
 
     public List<Ticket> getAllTickets(){
-        ticketList = db.getAllTickets();
+        ticketList = ticketRepository.getAllTickets();
         return ticketList;
     }
 
@@ -62,7 +62,7 @@ public class TicketService {
         return ticketsPastDue;
     }
     public void createTicket(Ticket ticket) throws JsonProcessingException {
-        db.createTicket(ticket);
+        ticketRepository.insert(ticket);
     }
 
 }

@@ -4,8 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import nl.inholland.student.noservicedesk.Controllers.LoginController;
-import nl.inholland.student.noservicedesk.Controllers.MainViewController;
-import nl.inholland.student.noservicedesk.database.MongoDB;
+import nl.inholland.student.noservicedesk.database.MongoConn;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
 
 import java.io.IOException;
@@ -20,7 +19,8 @@ public class NoServiceDeskApplication{
 
     public static void startNoDesk(Stage stage) throws IOException {
         AppContext appContext = context;
-        MongoDB db = new MongoDB(appContext);
+        MongoConn db = new MongoConn(appContext);
+        db.connectDB();
         ServiceManager serviceManager = new ServiceManager(db);
 
         FXMLLoader fxmlLoader = new FXMLLoader(NoServiceDeskApplication.class.getResource("NoServiceDeskLogin-view.fxml"));

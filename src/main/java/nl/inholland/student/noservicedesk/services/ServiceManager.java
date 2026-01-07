@@ -1,22 +1,27 @@
 package nl.inholland.student.noservicedesk.services;
 
-import nl.inholland.student.noservicedesk.database.MongoDB;
+import nl.inholland.student.noservicedesk.database.MongoConn;
+import nl.inholland.student.noservicedesk.database.TicketRepository;
+import nl.inholland.student.noservicedesk.database.UserRepository;
 
 public class ServiceManager {
-    private final MongoDB db;
 
     public final UserService userService;
     public final TicketService ticketService;
     public final HandledTicketsService handledTicketsService;
+    public final AuthService authService;
 
-    public ServiceManager(MongoDB db) {
-        this.db = db;
-        db.connectDB();
+    public ServiceManager(MongoConn db) {
+        //Create repos
+        UserRepository userRepository = new UserRepository(db.users());
+        TicketRepository ticketRepository = new TicketRepository(db.tickets());
 
         // Create all services here
-        this.userService = new UserService(db);
-        this.ticketService = new TicketService(db);
-        this.handledTicketsService = new HandledTicketsService(db);
+        this.authService = new AuthService();
+        this.userService = new UserService(userRepository, authService);
+        this.ticketService = new TicketService(ticketRepository);
+        this.handledTicketsService = new HandledTicketsService(ticketRepository);
+
     }
 
     public UserService getUserService() {
@@ -31,4 +36,6 @@ public class ServiceManager {
     public HandledTicketsService getHandledTicketsService() {
         return handledTicketsService;
     }
+
+
 }

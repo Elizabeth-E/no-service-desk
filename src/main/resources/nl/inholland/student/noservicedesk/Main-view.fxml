@@ -14,6 +14,7 @@
                     <items>
                         <MenuItem text="Dashboard" onAction="#showDashboard"/>
                         <MenuItem text="Tickets" onAction="#showTickets"/>
+                        <MenuItem text="Create New User" onAction="#showCreateNewUser"/>
                     </items>
                 </Menu>
             </menus>
