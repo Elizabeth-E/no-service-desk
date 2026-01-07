@@ -8,6 +8,7 @@ import com.mongodb.client.model.UnwindOptions;
 import nl.inholland.student.noservicedesk.Models.Ticket;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,7 +85,7 @@ public class TicketRepository {
     }
 
     public void updateFields(String id, Document updatedFields) {
-        ticketCollection.updateOne(eq("_id", id), new Document("$set", updatedFields));
+        ticketCollection.updateOne(eq("_id", new ObjectId(id)), new Document("$set", updatedFields));
     }
 
     public void deleteById(String id) {

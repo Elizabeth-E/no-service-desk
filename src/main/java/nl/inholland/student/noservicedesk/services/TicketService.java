@@ -4,8 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import nl.inholland.student.noservicedesk.Models.Ticket;
 import nl.inholland.student.noservicedesk.database.TicketRepository;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
@@ -25,18 +24,31 @@ public class TicketService {
 
     public boolean checkDeadline(String deadlineString) {
         try {
-            DateTimeFormatter formatter =
-                    DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+            if (deadlineString == null) return false;
+            String s = deadlineString.trim();
+            if (s.isEmpty() || s.matches("\\d+")) return false;
 
-            ZonedDateTime zdt = ZonedDateTime.parse(deadlineString, formatter);
-            LocalDateTime deadline = zdt.toLocalDateTime();
-
-            return deadline.isBefore(LocalDateTime.now());
-        }
-        catch (Exception e) {
+            Instant deadline = parseToInstant(s);
+            return deadline.isBefore(Instant.now());
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public void setDeadlineFromCreatedAndDays(Ticket ticket, String daysAsString) {
+        int daysToAdd;
+        try {
+            daysToAdd = Integer.parseInt(daysAsString.trim());
+        } catch (NumberFormatException e) {
+            daysToAdd = 0;
+        }
+
+        Instant created = parseToInstant(ticket.getDate_created());
+        Instant deadline = created.plus(Duration.ofDays(daysToAdd));
+
+        // store back as Mongo-style ISO string with Z
+        ticket.setDeadline(deadline.toString());
     }
 
     public int getUnresolvedTicketCount(){
@@ -62,7 +74,25 @@ public class TicketService {
         return ticketsPastDue;
     }
     public void createTicket(Ticket ticket) throws JsonProcessingException {
+
         ticketRepository.insert(ticket);
+    }
+
+    private static Instant parseToInstant(String dateStr) {
+        String s = dateStr.trim();
+
+        // ISO with offset/Z (Mongo style)
+        try {
+            return OffsetDateTime.parse(s, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toInstant();
+        } catch (Exception ignored) {}
+
+        // ISO without offset (your LocalDateTime.toString())
+        try {
+            return LocalDateTime.parse(s, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                    .toInstant(ZoneOffset.UTC);
+        } catch (Exception ignored) {}
+
+        throw new IllegalArgumentException("Unparseable date: " + dateStr);
     }
 
 }

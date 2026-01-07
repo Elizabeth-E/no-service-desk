@@ -78,6 +78,7 @@ public class CreateNewTicketController {
         ticket.setIs_resolved(false);
 
         try {
+            ticketService.setDeadlineFromCreatedAndDays(ticket, ticket.getDate_created());
             ticketService.createTicket(ticket);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
