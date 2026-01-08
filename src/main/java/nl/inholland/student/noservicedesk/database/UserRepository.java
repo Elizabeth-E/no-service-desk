@@ -22,22 +22,6 @@ public class UserRepository {
 
     }
 
-    //    public Document findByEmail(String username) {
-//        return
-//    }
-//    public boolean authenticate(String username, String password) {
-//
-//        Document user = userCollection.find(eq("email_address", username)).first();
-//
-//        if (user == null)
-//            return false;
-//
-//        String storedHash = user.getString("password");
-//        storedHash = storedHash.replaceAll("\\s+", "");
-//
-//        return verifyPassword(password, storedHash);
-//    }
-
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
 
@@ -59,8 +43,23 @@ public class UserRepository {
         return users;
     }
 
-    public Document findByEmail(String username) {
-        Document user = userCollection.find(eq("email_address", username)).first();
-        return user;
+    public User findByEmail(String email) {
+        Document doc = userCollection.find(
+                eq("email_address", email)
+        ).first();
+
+        if (doc == null) {
+            return null;
+        }
+
+        // Normalize Mongo ObjectId -> String for your model
+        doc.put("_id", doc.getObjectId("_id").toHexString());
+
+        try {
+            return objectMapper.readValue(doc.toJson(), User.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
+
 }

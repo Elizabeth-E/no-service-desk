@@ -15,12 +15,20 @@
                <children>
                   <Label text="Subject: ">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="20.0" />
                      </font>
                   </Label>
                   <Label text="Reported By: ">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label text="Reporter Email">
+                     <font>
+                        <Font size="20.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -28,7 +36,7 @@
                   </Label>
                   <Label text="Priority:">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="20.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -36,7 +44,7 @@
                   </Label>
                   <Label text="Deadline for Follow Up:">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="20.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -44,7 +52,7 @@
                   </Label>
                   <Label text="Description: ">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="20.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -67,6 +75,14 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </ComboBox>
+                   <TextField fx:id="reporterEmail">
+                       <VBox.margin>
+                           <Insets top="10.0" />
+                       </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                   </TextField>
                   <ComboBox fx:id="ticketPriorities" prefWidth="200.0" promptText="priority...">
                      <VBox.margin>
                         <Insets top="10.0" />

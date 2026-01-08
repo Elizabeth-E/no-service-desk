@@ -5,9 +5,8 @@ import nl.inholland.student.noservicedesk.Models.Ticket;
 import nl.inholland.student.noservicedesk.database.TicketRepository;
 
 import java.time.*;
-import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Locale;
 
 public class TicketService {
     private TicketRepository ticketRepository;
@@ -22,40 +21,29 @@ public class TicketService {
         return ticketList;
     }
 
-    public boolean checkDeadline(String deadlineString) {
-        try {
-            if (deadlineString == null) return false;
-            String s = deadlineString.trim();
-            if (s.isEmpty() || s.matches("\\d+")) return false;
-
-            Instant deadline = parseToInstant(s);
-            return deadline.isBefore(Instant.now());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    public boolean isDeadlineExpired(Instant deadline) {
+        return deadline != null && deadline.isBefore(Instant.now());
     }
 
     public void setDeadlineFromCreatedAndDays(Ticket ticket, String daysAsString) {
-        int daysToAdd;
-        try {
-            daysToAdd = Integer.parseInt(daysAsString.trim());
-        } catch (NumberFormatException e) {
-            daysToAdd = 0;
-        }
+        int daysToAdd = parseDays(daysAsString);
 
-        Instant created = parseToInstant(ticket.getDate_created());
-        Instant deadline = created.plus(Duration.ofDays(daysToAdd));
+        Instant created = ticket.getDate_created();
+        if (created == null) created = Instant.now(); // or throw
 
-        // store back as Mongo-style ISO string with Z
-        ticket.setDeadline(deadline.toString());
+        ticket.setDeadline(created.plus(daysToAdd, ChronoUnit.DAYS));
+    }
+
+    private int parseDays(String s) {
+        try { return Integer.parseInt(s.trim()); }
+        catch (Exception e) { return 0; }
     }
 
     public int getUnresolvedTicketCount(){
         int ticketsUnresolved = 0;
 
         for (Ticket ticket : ticketList) {
-            if(!ticket.isIs_resolved()) {
+            if(!ticket.getIs_resolved()) {
                 ticketsUnresolved++;
             }
         }
@@ -63,36 +51,17 @@ public class TicketService {
     }
 
     /// TODO: this isnt actually working but its not giving errors. fix so its returning an accurate count
-    public int getPastDeadlineCount(){
-        int ticketsPastDue = 0;
+    public int getPastDeadlineCount() {
+        int count = 0;
 
         for (Ticket ticket : ticketList) {
-            if(!checkDeadline(ticket.getDeadline())) {
-                ticketsPastDue++;
+            if (isDeadlineExpired(ticket.getDeadline())) {
+                count++;
             }
         }
-        return ticketsPastDue;
+        return count;
     }
     public void createTicket(Ticket ticket) throws JsonProcessingException {
-
         ticketRepository.insert(ticket);
     }
-
-    private static Instant parseToInstant(String dateStr) {
-        String s = dateStr.trim();
-
-        // ISO with offset/Z (Mongo style)
-        try {
-            return OffsetDateTime.parse(s, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toInstant();
-        } catch (Exception ignored) {}
-
-        // ISO without offset (your LocalDateTime.toString())
-        try {
-            return LocalDateTime.parse(s, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                    .toInstant(ZoneOffset.UTC);
-        } catch (Exception ignored) {}
-
-        throw new IllegalArgumentException("Unparseable date: " + dateStr);
-    }
-
 }

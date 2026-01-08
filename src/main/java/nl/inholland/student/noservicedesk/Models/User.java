@@ -1,22 +1,30 @@
 package nl.inholland.student.noservicedesk.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import nl.inholland.student.noservicedesk.database.ObjectIdDeserializer;
+import nl.inholland.student.noservicedesk.database.ObjectIdSerializer;
+import org.bson.types.ObjectId;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
-    private String _id;
+    @JsonSerialize(using = ObjectIdSerializer.class)
+    @JsonDeserialize(using = ObjectIdDeserializer.class)
+    private ObjectId _id;
     private String first_name;
     private String last_name;
     private String role;
     private String email_address;
     private String location;
     private String phone;
+    private String password;
 
-    public String get_id() {
+    public ObjectId get_id() {
         return _id;
     }
 
-    public void set_id(String _id) {
+    public void set_id(ObjectId _id) {
         this._id = _id;
     }
 
@@ -70,5 +78,13 @@ public class User {
 
     public String getFullName() {
         return first_name + " " + last_name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

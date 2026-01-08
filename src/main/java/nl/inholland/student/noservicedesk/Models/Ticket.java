@@ -3,46 +3,57 @@ package nl.inholland.student.noservicedesk.Models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import nl.inholland.student.noservicedesk.database.ObjectIdDeserializer;
+import nl.inholland.student.noservicedesk.database.ObjectIdSerializer;
+import org.bson.types.ObjectId;
+
+import java.time.Instant;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Ticket {
     @JsonProperty("_id")
-    private String _id;
-    private String date_created;
-    private String deadline;
+    @JsonSerialize(using = ObjectIdSerializer.class)
+    @JsonDeserialize(using = ObjectIdDeserializer.class)
+    private ObjectId _id;
+    private Instant date_created;
+    private Instant deadline;
     private String subject;
     private String description;
     private String priority;
     private String status;
     private boolean is_resolved;
-    private String reported_by;
+    @JsonSerialize(using = ObjectIdSerializer.class)
+    @JsonDeserialize(using = ObjectIdDeserializer.class)
+    private ObjectId reported_by;
     private String reported_by_name;
 
     public Ticket() {
     }
 
-    public String get_id() {
+    public ObjectId get_id() {
         return _id;
     }
 
-    public void set_id(String id) {
+    public void set_id(ObjectId id) {
         this._id = id;
     }
 
-    public String getDate_created() {
+    public Instant getDate_created() {
         return date_created;
     }
 
-    public void setDate_created(String date_created) {
+    public void setDate_created(Instant date_created) {
         this.date_created = date_created;
     }
 
-    public String getDeadline() {
+    public Instant getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(String deadline) {
+    public void setDeadline(Instant deadline) {
         this.deadline = deadline;
     }
 
@@ -78,7 +89,7 @@ public class Ticket {
         this.status = status;
     }
 
-    public boolean isIs_resolved() {
+    public boolean getIs_resolved() {
         return is_resolved;
     }
 
@@ -86,11 +97,11 @@ public class Ticket {
         this.is_resolved = is_resolved;
     }
 
-    public String getReported_by() {
+    public ObjectId getReported_by() {
         return reported_by;
     }
 
-    public void setReported_by(String reported_by) {
+    public void setReported_by(ObjectId reported_by) {
         this.reported_by = reported_by;
     }
 

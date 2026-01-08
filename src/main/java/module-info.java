@@ -14,6 +14,7 @@ module nl.inholland.student.noservicedesk {
     requires com.fasterxml.jackson.databind;
     requires javafx.base;
     requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.datatype.jsr310;
 
     opens nl.inholland.student.noservicedesk to javafx.fxml;
     exports nl.inholland.student.noservicedesk;
