@@ -2,14 +2,13 @@ package nl.inholland.student.noservicedesk.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import nl.inholland.student.noservicedesk.Models.Priority;
-import nl.inholland.student.noservicedesk.Models.Subject;
-import nl.inholland.student.noservicedesk.Models.Ticket;
-import nl.inholland.student.noservicedesk.Models.User;
+import javafx.stage.Stage;
+import nl.inholland.student.noservicedesk.Models.*;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
 import nl.inholland.student.noservicedesk.services.TicketService;
 import nl.inholland.student.noservicedesk.services.UserService;
@@ -29,6 +28,7 @@ public class UpdateTicketController {
 
     private Ticket currentTicket;
     private List<User> cachedUsers;
+    private User currentUser;
 
     @FXML private ComboBox<Subject> ticketSubjects;
     @FXML private ComboBox<Priority> ticketPriorities;
@@ -36,16 +36,20 @@ public class UpdateTicketController {
     @FXML private TextArea ticketDescription;
     @FXML private ComboBox<String> reportedByUsers;
     @FXML private TextField reporterEmail;
+    @FXML private TextArea ticketComment;
     @FXML public BorderPane viewLayout;
 
     @FXML
     private void initialize() {
-        // Populate static dropdowns once
         ticketSubjects.getItems().setAll(Subject.values());
         ticketPriorities.getItems().setAll(Priority.values());
         followUpDeadline.getItems().setAll("1","2","3","4","5","6","7");
 
         // Lock unchangeable fields (still visible, not editable)
+        ticketSubjects.setEditable(false);
+        ticketSubjects.setMouseTransparent(true);
+        ticketSubjects.setFocusTraversable(false);
+
         reportedByUsers.setEditable(false);
         reportedByUsers.setMouseTransparent(true);
         reportedByUsers.setFocusTraversable(false);
@@ -54,12 +58,7 @@ public class UpdateTicketController {
         reporterEmail.setMouseTransparent(true);
         reporterEmail.setFocusTraversable(false);
 
-        // "Bindings" (listeners) UI -> Ticket
-        ticketSubjects.valueProperty().addListener((obs, oldV, newV) -> {
-            if (currentTicket != null && newV != null) {
-                currentTicket.setSubject(newV.name());
-            }
-        });
+        // Removed subject listener so subject cannot be changed
 
         ticketPriorities.valueProperty().addListener((obs, oldV, newV) -> {
             if (currentTicket != null && newV != null) {
@@ -99,14 +98,7 @@ public class UpdateTicketController {
                 cachedUsers.stream().map(User::getFullName).toList()
         );
 
-        // ----- Prepopulate controls from Ticket -----
-
         // editable fields
-        ticketSubjects.getItems().stream()
-                .filter(s -> s.toString().equals(ticket.getSubject()))
-                .findFirst()
-                .ifPresent(ticketSubjects::setValue);
-
         ticketPriorities.getItems().stream()
                 .filter(p -> p.toString().equals(ticket.getPriority()))
                 .findFirst()
@@ -116,6 +108,11 @@ public class UpdateTicketController {
         followUpDeadline.setValue(daysUntilDeadlineClamped(ticket.getDeadline(), 1, 7));
 
         // unchangeable fields
+        ticketSubjects.getItems().stream()
+                .filter(s -> s.toString().equals(ticket.getSubject()))
+                .findFirst()
+                .ifPresent(ticketSubjects::setValue);
+
         String reporterName = Optional.ofNullable(ticket.getReported_by_name()).orElse("");
         reportedByUsers.setValue(reporterName);
 
@@ -128,13 +125,14 @@ public class UpdateTicketController {
         if (currentTicket == null) return;
 
         try {
-            // At this point currentTicket already contains updated values because of the listeners.
-            // Just call your service update.
-            ticketService.updateTicket(currentTicket); // adjust if your method name differs
-
-            // Optionally go back / refresh
-            // mainViewController.showTicketsOverview();
-
+            ticketService.updateTicket(currentTicket);
+            addHandledTicket(currentTicket, currentUser);
+            showAlert(
+                    javafx.scene.control.Alert.AlertType.INFORMATION,
+                    "Success",
+                    "Ticket Updated!",
+                    "Ticket successfully updated."
+            );
         } catch (Exception e) {
             showAlert(
                     javafx.scene.control.Alert.AlertType.ERROR,
@@ -143,6 +141,17 @@ public class UpdateTicketController {
                     "Something went wrong while updating the ticket.\n" + e.getMessage()
             );
         }
+    }
+
+    private void addHandledTicket(Ticket ticket, User currentUser) {
+        //add service and repo logic to update handledtickets table
+        HandledTicket handledTicket = new HandledTicket();
+        handledTicket.setTicketId(ticket.get_id());
+        handledTicket.setHandledBy(currentUser.get_id());
+        handledTicket.setHandledDate(Instant.now());
+        handledTicket.setComment(ticketComment.getText());
+
+        serviceManager.getHandledTicketsService().insertHandledTicket(handledTicket);
     }
 
     private static String daysUntilDeadlineClamped(Instant deadline, int min, int max) {
@@ -170,8 +179,15 @@ public class UpdateTicketController {
         if (ticket.getReported_by() == null) return Optional.empty();
 
         return users.stream()
-                .filter(u -> ticket.getReported_by().equals(u.get_id())) // change to getId() if needed
-                .map(User::getEmail_address) // change to getEmail() if needed
+                .filter(u -> ticket.getReported_by().equals(u.get_id()))
+                .map(User::getEmail_address)
                 .findFirst();
+    }
+    public void onCancelButtonClick(ActionEvent event) {
+        mainViewController.showTickets();
+    }
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
     }
 }

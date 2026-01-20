@@ -1,9 +1,26 @@
 package nl.inholland.student.noservicedesk.services;
 
+import nl.inholland.student.noservicedesk.Models.HandledTicket;
+import nl.inholland.student.noservicedesk.Models.Ticket;
+import nl.inholland.student.noservicedesk.database.HandledTicketRepository;
 import nl.inholland.student.noservicedesk.database.TicketRepository;
+
+import java.util.List;
 
 public class HandledTicketsService{
 
-    public HandledTicketsService(TicketRepository db) {
+    private final HandledTicketRepository handledTicketRepository;
+
+    public HandledTicketsService(HandledTicketRepository handledTicketRepository) {
+        this.handledTicketRepository = handledTicketRepository;
+    }
+
+    public void insertHandledTicket(HandledTicket handledTicket) {
+        handledTicketRepository.insertHandledTicket(handledTicket);
+    }
+
+    public List<HandledTicket> getHandledTicketHistory(Ticket ticket) {
+        List<HandledTicket> ticketHistory = handledTicketRepository.getByTicketId(ticket.get_id());
+        return ticketHistory;
     }
 }

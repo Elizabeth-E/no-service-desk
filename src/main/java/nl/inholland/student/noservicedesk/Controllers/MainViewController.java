@@ -101,6 +101,7 @@ public class MainViewController {
             if (controller instanceof UpdateTicketController utc) {
                 utc.setServiceManager(serviceManager);
                 utc.setMainViewController(this);
+                utc.setCurrentUser(user);
                 utc.buildUpdateTicketForm(ticket);
             }
         });
@@ -161,5 +162,16 @@ public class MainViewController {
             return false;
         }
         return false;
+    }
+
+    public void showTicketHistory(Ticket ticketHistory) {
+        setCenter("TicketHistory-view.fxml", controller -> {
+            if (controller instanceof HandledTicketHistoryController hc) {
+                hc.setServiceManager(serviceManager);
+                hc.setMainViewController(this);
+                hc.setTicket(ticketHistory);
+                hc.buildHistoryTableView();
+            }
+        });
     }
 }

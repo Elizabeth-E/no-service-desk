@@ -16,7 +16,6 @@ import nl.inholland.student.noservicedesk.services.TicketService;
 import nl.inholland.student.noservicedesk.services.UserService;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class CreateNewTicketController {

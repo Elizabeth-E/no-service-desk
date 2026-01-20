@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="viewLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.inholland.student.noservicedesk.Controllers.HandledTicketHistoryController">
+    <top>
+    </top>
+    <center>
+        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Separator>
+                <VBox prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                  <Label style="-fx-background-color: LIGHTBLUE;" text="Ticket Info">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                        <Label fx:id="subjectLabel" text="Subject: ">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="reportedByLabel" text="Reported By: ">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <Label fx:id="priorityLabel" text="Priority:">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <Label fx:id="deadlineLabel" text="Deadline for Follow Up:">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <Label fx:id="descriptionLabel" text="Description: ">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                    </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+                </VBox>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Separator>
+                <Label style="-fx-background-color: LIGHTBLUE;" text="History Overview">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+                </Label>
+                <TableView fx:id="handleTicketsHistoryTableview">
+                    <columns>
+                        <TableColumn fx:id="handledByColumn" prefWidth="95.0" text="Handled by" />
+                        <TableColumn fx:id="commentColumn" prefWidth="95.0" text="Comment" />
+                    </columns>
+                </TableView>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                        <Button fx:id="cancelHistory" mnemonicParsing="false" onAction="#onCancelHistoryButtonClick" style="-fx-background-color: LIGHTPINK;" text="Delete Ticket">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets right="20.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button fx:id="updateTicket" mnemonicParsing="false" onAction="#onUpdateTicketButtonClick" style="-fx-background-color: DODGERBLUE;" text="Update Ticket" textFill="WHITE">
+                            <font>
+                                <Font size="18.0" />
+                            </font></Button>
+                </HBox>
+            </children>
+            <padding>
+                <Insets left="20.0" right="20.0" />
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

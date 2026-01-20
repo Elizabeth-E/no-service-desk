@@ -60,6 +60,10 @@
                      <font>
                         <Font size="18.0" />
                      </font></Button>
+                   <Button fx:id="viewTicketHistory" mnemonicParsing="false" onAction="#onViewTicketHistoryButtonClick" style="-fx-background-color: DODGERBLUE;" text="Update Ticket" textFill="WHITE">
+                       <font>
+                           <Font size="18.0" />
+                       </font></Button>
                </children>
             </HBox>
          </children>

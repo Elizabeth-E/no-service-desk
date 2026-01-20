@@ -21,7 +21,6 @@ public class UserRepository {
     public UserRepository(MongoCollection<Document> userCollection) {
         this.userCollection = userCollection;
         this.objectMapper = new ObjectMapper();
-
     }
 
     public List<User> getAllUsers() {

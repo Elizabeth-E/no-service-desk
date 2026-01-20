@@ -1,43 +1,62 @@
 package nl.inholland.student.noservicedesk.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import nl.inholland.student.noservicedesk.database.ObjectIdDeserializer;
+import nl.inholland.student.noservicedesk.database.ObjectIdSerializer;
+import org.bson.types.ObjectId;
+
+import java.time.Instant;
 import java.time.LocalDateTime;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class HandledTicket {
-    private String id;
-    private LocalDateTime handledDate;
-    private String ticketId;
-    private String handledBy;
+    @JsonProperty("_id")
+    @JsonSerialize(using = ObjectIdSerializer.class)
+    @JsonDeserialize(using = ObjectIdDeserializer.class)
+    private ObjectId _id;
+    private Instant handledDate;
+    @JsonSerialize(using = ObjectIdSerializer.class)
+    @JsonDeserialize(using = ObjectIdDeserializer.class)
+    private ObjectId ticketId;
+    @JsonSerialize(using = ObjectIdSerializer.class)
+    @JsonDeserialize(using = ObjectIdDeserializer.class)
+    private ObjectId handledBy;
     private String comment;
 
-    public String getId() {
-        return id;
+    public ObjectId get_Id() {
+        return _id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void set_Id(ObjectId id) {
+        this._id = _id;
     }
 
-    public LocalDateTime getHandledDate() {
+    public Instant getHandledDate() {
         return handledDate;
     }
 
-    public void setHandledDate(LocalDateTime handledDate) {
+    public void setHandledDate(Instant handledDate) {
         this.handledDate = handledDate;
     }
 
-    public String getTicketId() {
+    public ObjectId getTicketId() {
         return ticketId;
     }
 
-    public void setTicketId(String ticketId) {
+    public void setTicketId(ObjectId ticketId) {
         this.ticketId = ticketId;
     }
 
-    public String getHandledBy() {
+    public ObjectId getHandledBy() {
         return handledBy;
     }
 
-    public void setHandledBy(String handledBy) {
+    public void setHandledBy(ObjectId handledBy) {
         this.handledBy = handledBy;
     }
 

@@ -1,5 +1,6 @@
 package nl.inholland.student.noservicedesk.services;
 
+import nl.inholland.student.noservicedesk.database.HandledTicketRepository;
 import nl.inholland.student.noservicedesk.database.MongoConn;
 import nl.inholland.student.noservicedesk.database.TicketRepository;
 import nl.inholland.student.noservicedesk.database.UserRepository;
@@ -15,13 +16,14 @@ public class ServiceManager {
         //Create repos
         UserRepository userRepository = new UserRepository(db.users());
         TicketRepository ticketRepository = new TicketRepository(db.tickets());
+        HandledTicketRepository handledTicketRepository = new HandledTicketRepository(db.tickets(), db.handledTickets());
 
         // Create all services here
         this.authService = new AuthService();
         authService.setUserRepository(userRepository);
         this.userService = new UserService(userRepository, authService);
         this.ticketService = new TicketService(ticketRepository);
-        this.handledTicketsService = new HandledTicketsService(ticketRepository);
+        this.handledTicketsService = new HandledTicketsService(handledTicketRepository);
 
     }
 

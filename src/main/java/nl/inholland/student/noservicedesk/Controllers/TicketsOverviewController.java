@@ -134,4 +134,9 @@ public class TicketsOverviewController {
         Ticket updateTicket = ticketsTableview.getSelectionModel().getSelectedItem();;
         mainViewController.showUpdateTicket(updateTicket);
     }
+
+    public void onViewTicketHistoryButtonClick(ActionEvent event) {
+        Ticket ticketHistory = ticketsTableview.getSelectionModel().getSelectedItem();;
+        mainViewController.showTicketHistory(ticketHistory);
+    }
 }
