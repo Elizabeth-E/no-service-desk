@@ -9,8 +9,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import nl.inholland.student.noservicedesk.Models.User;
 import nl.inholland.student.noservicedesk.NoServiceDeskApplication;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
+import nl.inholland.student.noservicedesk.services.UserService;
 
 public class LoginController {
 
@@ -26,12 +28,13 @@ public class LoginController {
 
     @FXML
     public void onLoginButtonClick(ActionEvent event) {
-        String username = emailTextField.getText();
+        String email = emailTextField.getText();
         String password = passwordTextField.getText();
+        UserService userService = serviceManager.getUserService();
 
         try {
-            // TODO: replace with real auth
-            if (true) {
+            if (userService.authenticate(email, password)) {
+                User loginUser = userService.getUserByEmail(email);
 
                 FXMLLoader loader = new FXMLLoader(NoServiceDeskApplication.class.getResource("Main-view.fxml"));
                 Parent mainRoot = loader.load();
@@ -46,13 +49,13 @@ public class LoginController {
                 stage.setTitle("Dashboard");
                 stage.show();
 
+                main.setUser(loginUser);
                 main.showDashboard();
 
             } else {
                 errorLabel.setText("Wrong username or password!");
             }
         } catch (Exception e) {
-            e.printStackTrace();
             errorLabel.setText("Login failed: " + e.getMessage());
         }
     }

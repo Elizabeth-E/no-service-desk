@@ -9,7 +9,7 @@ public class ServiceManager {
     public final UserService userService;
     public final TicketService ticketService;
     public final HandledTicketsService handledTicketsService;
-    public final AuthService authService;
+    private final AuthService authService;
 
     public ServiceManager(MongoConn db) {
         //Create repos
@@ -18,6 +18,7 @@ public class ServiceManager {
 
         // Create all services here
         this.authService = new AuthService();
+        authService.setUserRepository(userRepository);
         this.userService = new UserService(userRepository, authService);
         this.ticketService = new TicketService(ticketRepository);
         this.handledTicketsService = new HandledTicketsService(ticketRepository);
@@ -36,6 +37,4 @@ public class ServiceManager {
     public HandledTicketsService getHandledTicketsService() {
         return handledTicketsService;
     }
-
-
 }

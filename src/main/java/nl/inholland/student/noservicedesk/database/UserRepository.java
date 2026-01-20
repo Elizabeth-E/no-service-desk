@@ -3,8 +3,10 @@ package nl.inholland.student.noservicedesk.database;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.result.DeleteResult;
 import nl.inholland.student.noservicedesk.Models.User;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,4 +64,62 @@ public class UserRepository {
         }
     }
 
+    public User createUser(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        if (user.getEmail_address() == null || user.getEmail_address().isBlank()) {
+            throw new IllegalArgumentException("Email address is required");
+        }
+
+        // Check duplicate email
+        if (findByEmail(user.getEmail_address()) != null) {
+            throw new IllegalArgumentException("User with this email already exists");
+        }
+
+        // Build document using your DB field names
+        Document doc = new Document()
+                .append("first_name", user.getFirst_name())
+                .append("last_name", user.getLast_name())
+                .append("role", user.getRole())
+                .append("email_address", user.getEmail_address())
+                .append("location", user.getLocation())
+                .append("phone", user.getPhone())
+                .append("password", user.getPassword());
+
+        userCollection.insertOne(doc);
+
+        // Mongo adds _id automatically
+        ObjectId newId = doc.getObjectId("_id");
+        user.set_id(newId);
+
+        return user;
+    }
+
+    /**
+     * Deletes user by Mongo ObjectId string. Returns true if a user was deleted.
+     */
+    public boolean deleteUserById(String id) {
+        if (id == null || id.isBlank()) return false;
+
+        ObjectId objectId;
+        try {
+            objectId = new ObjectId(id);
+        } catch (IllegalArgumentException ex) {
+            return false; // invalid ObjectId string
+        }
+
+        DeleteResult result = userCollection.deleteOne(eq("_id", objectId));
+        return result.getDeletedCount() > 0;
+    }
+
+    /**
+     * Deletes user by email address. Returns true if a user was deleted.
+     */
+    public boolean deleteUserByEmail(String email) {
+        if (email == null || email.isBlank()) return false;
+
+        DeleteResult result = userCollection.deleteOne(eq("email_address", email));
+        return result.getDeletedCount() > 0;
+    }
 }

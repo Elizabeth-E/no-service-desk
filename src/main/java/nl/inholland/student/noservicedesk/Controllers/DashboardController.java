@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import nl.inholland.student.noservicedesk.Models.Ticket;
+import nl.inholland.student.noservicedesk.Models.User;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
 import nl.inholland.student.noservicedesk.services.TicketService;
 
@@ -18,8 +19,6 @@ public class DashboardController {
     @FXML
     private Label incidentsPastDueLabel;
     private ServiceManager serviceManager;
-    private Stage stage;
-    private TicketService ticketService;
     private MainViewController mainViewController;
 
 
@@ -27,19 +26,10 @@ public class DashboardController {
     }
 
     public void buildDashboard() {
-        ticketService = serviceManager.getTicketService();
+        List<Ticket> ticketList = serviceManager.getTicketService().getAllTickets();
 
-        List<Ticket> ticketList = ticketService.getAllTickets();
-
-        System.out.println("Dashboard loaded.");
-
-        unresolvedIncidentsLabel.setText(ticketService.getUnresolvedTicketCount() +"/" + ticketList.size());
-
-        incidentsPastDueLabel.setText(ticketService.getPastDeadlineCount() +"/" + ticketList.size());
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
+        unresolvedIncidentsLabel.setText(serviceManager.getTicketService().getUnresolvedTicketCount() +"/" + ticketList.size());
+        incidentsPastDueLabel.setText(serviceManager.getTicketService().getPastDeadlineCount() +"/" + ticketList.size());
     }
 
     public void setServiceManager(ServiceManager serviceManager) {
@@ -53,5 +43,12 @@ public class DashboardController {
     @FXML
     public void onShowListButton(){
         mainViewController.showTickets();
+    }
+
+    public void buildDashboardForEmployee(User user) {
+        List<Ticket> ticketList = serviceManager.getTicketService().getAllTicketsForUser(user);
+
+        unresolvedIncidentsLabel.setText(serviceManager.getTicketService().getUnresolvedTicketCount() +"/" + ticketList.size());
+        incidentsPastDueLabel.setText(serviceManager.getTicketService().getPastDeadlineCount() +"/" + ticketList.size());
     }
 }

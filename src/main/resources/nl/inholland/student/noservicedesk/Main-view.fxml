@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="root" fx:controller="nl.inholland.student.noservicedesk.Controllers.MainViewController" xmlns:fx="http://javafx.com/fxml">
+<BorderPane fx:id="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.inholland.student.noservicedesk.Controllers.MainViewController">
     <top>
-        <MenuBar>
+        <MenuBar fx:id="menu">
             <menus>
                 <Menu text="Navigate">
                     <items>
-                        <MenuItem text="Dashboard" onAction="#showDashboard"/>
-                        <MenuItem text="Tickets" onAction="#showTickets"/>
-                        <MenuItem text="Create New User" onAction="#showCreateNewUser"/>
+                        <MenuItem onAction="#showDashboard" text="Dashboard" />
+                        <MenuItem onAction="#showTickets" text="Tickets" />
+                        <MenuItem  fx:id="createUserMenu" onAction="#showCreateNewUser" text="Create New User" />
+                        <MenuItem  fx:id="userManagement" onAction="#showUserManagement" text="Manage Users" />
                     </items>
                 </Menu>
             </menus>

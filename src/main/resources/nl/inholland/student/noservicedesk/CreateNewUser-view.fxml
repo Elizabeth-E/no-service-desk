@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="viewLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="viewLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.inholland.student.noservicedesk.Controllers.CreateNewUserController">
     <top>
     </top>
    <center>
@@ -21,7 +21,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField>
+                  <TextField fx:id="newUserFirstName">
                      <HBox.margin>
                         <Insets left="50.0" />
                      </HBox.margin>
@@ -41,7 +41,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField>
+                  <TextField fx:id="newUserLastName">
                      <HBox.margin>
                         <Insets left="50.0" />
                      </HBox.margin>
@@ -61,7 +61,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox promptText="pick a role">
+                  <ComboBox fx:id="userRoleComboBox" promptText="pick a role">
                      <HBox.margin>
                         <Insets left="35.0" />
                      </HBox.margin></ComboBox>
@@ -76,7 +76,7 @@
                      <font>
                         <Font size="16.0" />
                      </font></Label>
-                  <TextField>
+                  <TextField fx:id="newUserEmail">
                      <HBox.margin>
                         <Insets left="35.0" />
                      </HBox.margin></TextField>
@@ -91,7 +91,7 @@
                      <font>
                         <Font size="16.0" />
                      </font></Label>
-                  <TextField>
+                  <TextField fx:id="newUserPhoneNumber">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin></TextField>
@@ -106,7 +106,7 @@
                      <font>
                         <Font size="16.0" />
                      </font></Label>
-                  <ComboBox prefWidth="150.0" promptText="choose location">
+                  <ComboBox fx:id="userLocationComboBox" prefWidth="150.0" promptText="choose location">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
@@ -122,7 +122,7 @@
                      <font>
                         <Font size="16.0" />
                      </font></Label>
-                  <CheckBox mnemonicParsing="false" text="yes, a password email will be sent to the user">
+                  <CheckBox fx:id="sendPasswordCheckBox" mnemonicParsing="false" text="yes, a password email will be sent to the user">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
@@ -134,14 +134,14 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" style="-fx-background-color: SALMON;" text="cancel" textFill="WHITE">
+                  <Button fx:id="cancelButton" mnemonicParsing="false" style="-fx-background-color: SALMON;" text="cancel" onAction="#onCancelButtonClick" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin></Button>
-                  <Button mnemonicParsing="false" style="-fx-background-color: DODGERBLUE;" text="Add User" textFill="WHITE">
+                  <Button mnemonicParsing="false" style="-fx-background-color: DODGERBLUE;" text="Add User" onAction="#onAddUserButtonClick" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>

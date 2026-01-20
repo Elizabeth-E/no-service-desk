@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="viewLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="viewLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.inholland.student.noservicedesk.Controllers.UserManagementController">
     <top>
     </top>
     <center>
@@ -36,13 +36,14 @@
                         <Insets bottom="10.0" top="10.0" />
                     </VBox.margin>
                 </HBox>
-                <TableView>
+                <TableView fx:id="userTableview">
                     <columns>
-                        <TableColumn prefWidth="47.0" text="ID" />
-                        <TableColumn prefWidth="135.0" text="Email" />
-                        <TableColumn prefWidth="129.0" text="First Name" />
-                        <TableColumn prefWidth="139.0" text="Last Name" />
-                        <TableColumn minWidth="0.0" prefWidth="109.0" text="Current Tickets" />
+                        <TableColumn fx:id="idColumn" text="ID" prefWidth="60" />
+                        <TableColumn fx:id="firstNameColumn" text="First Name" prefWidth="120" />
+                        <TableColumn fx:id="lastNameColumn" text="Last Name" prefWidth="120" />
+                        <TableColumn fx:id="emailAddressColumn" text="Email" prefWidth="200" />
+                        <TableColumn fx:id="locationColumn" text="Location" prefWidth="120" />
+                        <TableColumn fx:id="phoneColumn" text="Phone" prefWidth="120" />
                     </columns>
                 </TableView>
             </children>

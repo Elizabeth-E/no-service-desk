@@ -2,6 +2,7 @@ package nl.inholland.student.noservicedesk.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import nl.inholland.student.noservicedesk.Models.Ticket;
+import nl.inholland.student.noservicedesk.Models.User;
 import nl.inholland.student.noservicedesk.database.TicketRepository;
 
 import java.time.*;
@@ -50,7 +51,6 @@ public class TicketService {
         return ticketsUnresolved;
     }
 
-    /// TODO: this isnt actually working but its not giving errors. fix so its returning an accurate count
     public int getPastDeadlineCount() {
         int count = 0;
 
@@ -63,5 +63,29 @@ public class TicketService {
     }
     public void createTicket(Ticket ticket) throws JsonProcessingException {
         ticketRepository.insert(ticket);
+    }
+
+    public List<Ticket> getAllTicketsForUser(User user) {
+        ticketList = ticketRepository.getTicketsByUser(user);
+        return ticketList;
+    }
+
+    public void updateTicket(Ticket ticket) throws JsonProcessingException {
+        try{
+            if (ticket == null) {
+                throw new IllegalArgumentException("Ticket cannot be null");
+            }
+            ticketRepository.update(ticket);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public void deleteTicket(Ticket ticket) throws JsonProcessingException {
+        if (ticket == null) {
+            throw new IllegalArgumentException("Ticket cannot be null");
+        }
+        ticketRepository.deleteById(ticket.get_id());
     }
 }

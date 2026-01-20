@@ -25,7 +25,7 @@
                   </TextField>
                   <Button fx:id="createIncident" mnemonicParsing="false" onAction="#onCreateIncidentButtonClick" style="-fx-background-color: DODGERBLUE;" text="Create Incident" textFill="WHITE">
                      <font>
-                        <Font size="16.0" />
+                        <Font size="18.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="200.0" />
@@ -46,6 +46,22 @@
                   <TableColumn fx:id="isResolvedColumn" prefWidth="95.0" text="IsResolved" />
               </columns>
             </TableView>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="deleteTicket" mnemonicParsing="false" onAction="#onDeleteTicketButtonClick" style="-fx-background-color: LIGHTPINK;" text="Delete Ticket">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="updateTicket" mnemonicParsing="false" onAction="#onUpdateTicketButtonClick" style="-fx-background-color: DODGERBLUE;" text="Update Ticket" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Button>
+               </children>
+            </HBox>
          </children>
          <padding>
             <Insets left="20.0" right="20.0" />

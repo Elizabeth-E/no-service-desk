@@ -8,8 +8,8 @@ import org.bson.Document;
 public class AuthService {
     private UserRepository userRepository;
 
-    public boolean authenticate(String username, String password) {
-        User user = userRepository.findByEmail(username);
+    public boolean authenticate(String email, String password) {
+        User user = userRepository.findByEmail(email);
         if (user == null) return false;
 
         String storedHash = user.getPassword();
@@ -24,5 +24,9 @@ public class AuthService {
 
     public boolean verify(String plain, String hashed) {
         return BCrypt.verifyer().verify(plain.toCharArray(), hashed).verified;
+    }
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }

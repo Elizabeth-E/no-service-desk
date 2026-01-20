@@ -26,5 +26,11 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public User createNewUser(User user) {
+        String hashPass = authService.hash(user.getPassword());
+        user.setPassword(hashPass);
+        return userRepository.createUser(user);
+    }
+
 }
 

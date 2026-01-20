@@ -5,15 +5,25 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import nl.inholland.student.noservicedesk.Models.Ticket;
+import nl.inholland.student.noservicedesk.Models.User;
 import nl.inholland.student.noservicedesk.NoServiceDeskApplication;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
 
-public class MainViewController {
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Menu;
 
+
+public class MainViewController {
     @FXML private BorderPane root;
+    @FXML private MenuItem createUserMenu;
+    @FXML private MenuItem userManagement;
+    @FXML private MenuBar menu;
 
     private Stage stage;
     private ServiceManager serviceManager;
+    private  User user;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -25,6 +35,16 @@ public class MainViewController {
 
     @FXML
     public void showDashboard() {
+        if(isServiceDeskEmployee(user)) {
+            showDashboardForServiceDeskEmployee();
+        }
+        else {
+            showUserDashboard(user);
+        }
+    }
+
+    @FXML
+    public void showDashboardForServiceDeskEmployee() {
         setCenter("Dashboard-view.fxml", controller -> {
             if (controller instanceof DashboardController dc) {
                 dc.setServiceManager(serviceManager);
@@ -41,22 +61,15 @@ public class MainViewController {
             if (controller instanceof TicketsOverviewController tc) {
                 tc.setServiceManager(serviceManager);
                 tc.setMainViewController(this);
-                tc.fillTicketsTable();
+                if(isServiceDeskEmployee(user)) {
+                    tc.fillServiceDeskEmployeeTicketsTableView();
+                }
+                else {
+                    tc.fillUserTicketsTableView(user);
+                }
             }
         });
         if (stage != null) stage.setTitle("Tickets Overview");
-    }
-
-    @FXML
-    public void showCreateNewUser() {
-        setCenter("CreateNewUser-view.fxml", controller -> {
-            if (controller instanceof CreateNewUserController uc) {
-                uc.setServiceManager(serviceManager);
-                uc.setMainViewController(this);
-                //ucc.fillTicketsTable();
-            }
-        });
-        if (stage != null) stage.setTitle("Create User");
     }
 
     @FXML
@@ -66,6 +79,29 @@ public class MainViewController {
                 cc.setServiceManager(serviceManager);
                 cc.setMainViewController(this);
                 cc.buildCreateNewTicketForm();
+            }
+        });
+        if (stage != null) stage.setTitle("Create Ticket");
+    }
+
+    @FXML
+    public void showCreateNewUser() {
+        setCenter("CreateNewUser-view.fxml", controller -> {
+            if (controller instanceof CreateNewUserController cc) {
+                cc.setServiceManager(serviceManager);
+                cc.setMainViewController(this);
+                cc.buildCreateNewUserForm();
+            }
+        });
+        if (stage != null) stage.setTitle("Create Ticket");
+    }
+    @FXML
+    public void showUpdateTicket(Ticket ticket) {
+        setCenter("UpdateTicket-view.fxml", controller -> {
+            if (controller instanceof UpdateTicketController utc) {
+                utc.setServiceManager(serviceManager);
+                utc.setMainViewController(this);
+                utc.buildUpdateTicketForm(ticket);
             }
         });
         if (stage != null) stage.setTitle("Create Ticket");
@@ -83,5 +119,47 @@ public class MainViewController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void closeStage() {
+        stage.close();
+    }
+
+    public void showUserDashboard(User user) {
+        Menu navigateMenu = menu.getMenus().get(0);
+        navigateMenu.getItems().remove(createUserMenu);
+        navigateMenu.getItems().remove(userManagement);
+
+        setCenter("Dashboard-view.fxml", controller -> {
+            if (controller instanceof DashboardController dc) {
+                dc.setServiceManager(serviceManager);
+                dc.setMainViewController(this);
+                dc.buildDashboardForEmployee(user);
+            }
+        });
+    }
+
+    public void showUserManagement() {
+        setCenter("UserManagement-view.fxml", controller -> {
+            if (controller instanceof UserManagementController umc) {
+                umc.setServiceManager(serviceManager);
+                umc.setMainViewController(this);
+                umc.buildUsersTableView();
+            }
+        });
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Boolean isServiceDeskEmployee(User user) {
+        if(user.getRole().equals("SERVICEDESKEMPLOYEE") || user.getRole().equals("ADMIN")) {
+            return true;
+        }
+        else if(user.getRole().equals("EMPLOYEE")) {
+            return false;
+        }
+        return false;
     }
 }

@@ -27,7 +27,6 @@ public class NoServiceDeskApplication{
 
         Scene scene = new Scene(fxmlLoader.load(), 800, 800);
 
-        // ✅ controller should match the login FXML fx:controller
         LoginController controller = fxmlLoader.getController();
 
         controller.setServiceManager(serviceManager);
