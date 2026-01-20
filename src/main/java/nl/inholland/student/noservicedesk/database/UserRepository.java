@@ -34,7 +34,6 @@ public class UserRepository {
             // normalize object id
             normalized.put("_id", getMongoObjectIdString(normalized.get("_id")));
 
-            // Convert into User object
             try {
                 User user = objectMapper.readValue(normalized.toJson(), User.class);
                 users.add(user);
@@ -54,7 +53,7 @@ public class UserRepository {
             return null;
         }
 
-        // Normalize Mongo ObjectId -> String for your model
+        // Normalize Mongo ObjectId
         doc.put("_id", doc.getObjectId("_id").toHexString());
 
         try {
@@ -77,7 +76,7 @@ public class UserRepository {
             throw new IllegalArgumentException("User with this email already exists");
         }
 
-        // Build document using your DB field names
+        // Build document using field names
         Document doc = new Document()
                 .append("first_name", user.getFirst_name())
                 .append("last_name", user.getLast_name())
