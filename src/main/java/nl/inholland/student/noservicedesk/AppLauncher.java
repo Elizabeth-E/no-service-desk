@@ -33,9 +33,8 @@ public class AppLauncher extends Application {
 
         submit.setOnAction(e -> {
             try {
-                //TODO: reset to manual input before submission
-                String base64Key = "T0VGa0X2WLDpO7WO5b8G+BVG40WToBUgNHBllLGJC6s=";
-                        //keyField.getText().trim();
+
+                String base64Key = keyField.getText().trim();
                 if (base64Key.isEmpty()) {
                     errorLabel.setText("The key cannot be empty.");
                     return;
