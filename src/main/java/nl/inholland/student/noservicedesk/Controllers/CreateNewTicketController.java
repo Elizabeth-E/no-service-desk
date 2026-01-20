@@ -1,6 +1,5 @@
 package nl.inholland.student.noservicedesk.Controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
@@ -18,26 +17,19 @@ import nl.inholland.student.noservicedesk.services.UserService;
 import java.time.Instant;
 import java.util.List;
 
+import static nl.inholland.student.noservicedesk.Controllers.AlertHelper.showAlert;
+
 public class CreateNewTicketController {
 
-    @FXML
-    private ComboBox<Subject> ticketSubjects;
-    @FXML
-    private ComboBox<Priority> ticketPriorities;
-    @FXML
-    private ComboBox<String> followUpDeadline;
-    @FXML
-    private TextArea ticketDescription;
-    @FXML
-    private ComboBox<String> reportedByUsers;
-    @FXML
-    private TextField reporterEmail;
-    @FXML
-    public BorderPane viewLayout;
+    @FXML private ComboBox<Subject> ticketSubjects;
+    @FXML private ComboBox<Priority> ticketPriorities;
+    @FXML private ComboBox<String> followUpDeadline;
+    @FXML private TextArea ticketDescription;
+    @FXML private ComboBox<String> reportedByUsers;
+    @FXML private TextField reporterEmail;
+    @FXML public BorderPane viewLayout;
 
     private ServiceManager serviceManager;
-    private TicketService ticketService;
-    private UserService userService;
     private MainViewController mainViewController;
 
     public void setServiceManager(ServiceManager serviceManager) {this.serviceManager = serviceManager;}
@@ -59,9 +51,9 @@ public class CreateNewTicketController {
         reportedByUsers.getItems().setAll(usernames);
     }
 
-    public void onSubmitTicketButtonClick(ActionEvent event) {
-        ticketService = serviceManager.getTicketService();
-        userService = serviceManager.getUserService();
+    public void onSubmitTicketButtonClick() {
+        TicketService ticketService = serviceManager.getTicketService();
+        UserService userService = serviceManager.getUserService();
         Ticket ticket = new Ticket();
 
         if (ticketSubjects.getValue() != null)
@@ -79,11 +71,8 @@ public class CreateNewTicketController {
         if (reportedByUsers.getValue() != null || reporterEmail.getText() != null)
             try{
                 if(userService.getUserByEmail(reporterEmail.getText()) == null){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Error");
-                    alert.setContentText("User not found");
-                    alert.showAndWait();
+                    showAlert(Alert.AlertType.ERROR, "Error", "Could not find user",
+                            "Something went wrong while finding the user.");
                 }
 
                 User user = userService.getUserByEmail(reporterEmail.getText());
@@ -100,14 +89,12 @@ public class CreateNewTicketController {
             ticketService.setDeadlineFromCreatedAndDays(ticket, followUpDeadline.getValue());
             ticketService.createTicket(ticket);
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Ticket Created");
-            alert.setHeaderText("Ticket Created");
-            alert.setContentText("Ticket Created Successfully");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Ticket added successfully",
+                    "Ticket was created successfully");
             clearTicketsInput();
         } catch (Exception e) {
-            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not submit ticket",
+                    "Something went wrong while creating the ticket.");
         }
 
     }
@@ -120,7 +107,7 @@ public class CreateNewTicketController {
         ticketDescription.clear();
     }
 
-    public void onCancelNewTicketButtonClick(ActionEvent event) {
+    public void onCancelNewTicketButtonClick() {
         mainViewController.showTickets();
     }
 }

@@ -14,6 +14,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Menu;
 
+import static nl.inholland.student.noservicedesk.Controllers.AlertHelper.showAlert;
+
 
 public class MainViewController {
     @FXML private BorderPane root;
@@ -129,16 +131,17 @@ public class MainViewController {
             root.setCenter(view);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            showAlert(
+                    javafx.scene.control.Alert.AlertType.ERROR,
+                    "Error",
+                    "Could not load view",
+                    "Something went wrong while loading view.\n" + e.getMessage()
+            );
         }
     }
 
-    private void closeStage() {
-        stage.close();
-    }
-
     public void showUserDashboard(User user) {
-        Menu navigateMenu = menu.getMenus().get(0);
+        Menu navigateMenu = menu.getMenus().getFirst();
         navigateMenu.getItems().remove(createUserMenu);
         navigateMenu.getItems().remove(userManagement);
 

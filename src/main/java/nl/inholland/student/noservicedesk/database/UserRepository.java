@@ -3,7 +3,6 @@ package nl.inholland.student.noservicedesk.database;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import nl.inholland.student.noservicedesk.Models.User;
 import org.bson.Document;

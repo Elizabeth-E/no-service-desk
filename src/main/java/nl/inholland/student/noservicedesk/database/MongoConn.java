@@ -28,5 +28,4 @@ public class MongoConn {
     public MongoCollection<Document> users() { return database.getCollection("User"); }
     public MongoCollection<Document> handledTickets() { return database.getCollection("HandledTicket"); }
 
-    public void close() { client.close(); }
 }

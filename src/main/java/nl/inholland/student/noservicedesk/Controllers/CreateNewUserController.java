@@ -1,10 +1,8 @@
 package nl.inholland.student.noservicedesk.Controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 import nl.inholland.student.noservicedesk.Models.Location;
 import nl.inholland.student.noservicedesk.Models.Role;
 import nl.inholland.student.noservicedesk.Models.User;
@@ -48,7 +46,7 @@ public class CreateNewUserController {
         }
     }
 
-    public void onAddUserButtonClick(ActionEvent event) {
+    public void onAddUserButtonClick() {
         userService = serviceManager.getUserService();
 
         String firstName = newUserFirstName.getText();
@@ -89,14 +87,15 @@ public class CreateNewUserController {
             user.setRole(role.toString());
             user.setEmail_address(email);
             user.setPhone(phone);
+            assert location != null;
             user.setLocation(location.toString());
 
             // if send password not ticked make temp
             if (sendPasswordCheckBox != null && sendPasswordCheckBox.isSelected()) {
-                user.setPassword(generateTempPassword(10));
+                user.setPassword(generateTempPassword());
                 //an email would then be sent to user to share the generated password
             } else {
-                //this is a place holder for the sake of the application
+                //this is a placeholder for the sake of the application
                 user.setPassword("Password123");
             }
 
@@ -112,7 +111,7 @@ public class CreateNewUserController {
         }
     }
 
-    public void onCancelButtonClick(ActionEvent event) {
+    public void onCancelButtonClick() {
         mainViewController.showTickets();
     }
 
@@ -136,10 +135,10 @@ public class CreateNewUserController {
         return p.matcher(email).matches();
     }
 
-    private static String generateTempPassword(int length) {
+    private static String generateTempPassword() {
         String chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%";
-        StringBuilder sb = new StringBuilder(length);
-        for (int i = 0; i < length; i++) {
+        StringBuilder sb = new StringBuilder(10);
+        for (int i = 0; i < 10; i++) {
             int idx = (int) (Math.random() * chars.length());
             sb.append(chars.charAt(idx));
         }

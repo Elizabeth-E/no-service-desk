@@ -23,17 +23,12 @@ import static com.mongodb.client.model.Aggregates.project;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Projections.fields;
 import static com.mongodb.client.model.Projections.include;
-import static nl.inholland.student.noservicedesk.database.MongoHelper.getMongoDateString;
 
 public class TicketRepository {
     private final MongoCollection<Document> ticketCollection;
-    //private final ObjectMapper objectMapper;
 
     public TicketRepository(MongoCollection<Document> ticketCollection) {
         this.ticketCollection = ticketCollection;
-        //this.objectMapper = new ObjectMapper();
-        //objectMapper.registerModule(new JavaTimeModule());
-        //objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 
     public void insert(Ticket ticket) {

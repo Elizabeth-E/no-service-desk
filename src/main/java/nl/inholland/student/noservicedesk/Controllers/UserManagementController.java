@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -12,10 +11,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import nl.inholland.student.noservicedesk.Models.Ticket;
 import nl.inholland.student.noservicedesk.Models.User;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
-import nl.inholland.student.noservicedesk.services.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,20 +26,13 @@ public class UserManagementController {
     private MainViewController mainViewController;
     private List<User> users;
 
-    @FXML
-    private TableView<User> userTableview;
-    @FXML
-    private TableColumn<User, String> idColumn;
-    @FXML
-    private TableColumn<User, String> firstNameColumn;
-    @FXML
-    private TableColumn<User, String> lastNameColumn;
-    @FXML
-    private TableColumn<User, String> emailAddressColumn;
-    @FXML
-    private TableColumn<User, String> locationColumn;
-    @FXML
-    private TableColumn<User, String> phoneColumn;
+    @FXML private TableView<User> userTableview;
+    @FXML private TableColumn<User, String> idColumn;
+    @FXML private TableColumn<User, String> firstNameColumn;
+    @FXML private TableColumn<User, String> lastNameColumn;
+    @FXML private TableColumn<User, String> emailAddressColumn;
+    @FXML private TableColumn<User, String> locationColumn;
+    @FXML private TableColumn<User, String> phoneColumn;
 
     public void buildUsersTableView() {
         // makes userid object a string
@@ -72,7 +62,7 @@ public class UserManagementController {
         this.mainViewController = mainViewController;
     }
 
-    public void onDeleteUserButtonClick(ActionEvent event) {
+    public void onDeleteUserButtonClick() {
         User user = userTableview.getSelectionModel().getSelectedItem();
         if (user == null) {
             showAlert(
@@ -99,7 +89,7 @@ public class UserManagementController {
             try {
                 serviceManager.getUserService().deleteUser(user.get_id());
 
-                // Optional: refresh table after delete
+                //refresh table after delete
                 userTableview.getItems().remove(user);
 
             } catch (JsonProcessingException e) {
@@ -113,11 +103,11 @@ public class UserManagementController {
         }
     }
 
-    public void onUpdateUserButtonClick(ActionEvent event) {
+    public void onUpdateUserButtonClick() {
         mainViewController.showUpdateUser(userTableview.getSelectionModel().getSelectedItem());
     }
 
-    public void onAddUserButtonClick(ActionEvent event) {
+    public void onAddUserButtonClick() {
         mainViewController.showCreateNewUser();
     }
 }

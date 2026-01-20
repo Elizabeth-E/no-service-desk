@@ -29,13 +29,12 @@ public class UserService {
     }
 
     public User getUserById(ObjectId id) {
-        User foundUser = userRepository.getUserById(id);
-        return foundUser;
+        return userRepository.getUserById(id);
     }
-    public User createNewUser(User user) {
+    public void createNewUser(User user) {
         String hashPass = authService.hash(user.getPassword());
         user.setPassword(hashPass);
-        return userRepository.createUser(user);
+        userRepository.createUser(user);
     }
 
     public void deleteUser(ObjectId id) throws JsonProcessingException {

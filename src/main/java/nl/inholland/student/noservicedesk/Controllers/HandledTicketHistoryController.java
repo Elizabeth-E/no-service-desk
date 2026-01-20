@@ -3,7 +3,6 @@ package nl.inholland.student.noservicedesk.Controllers;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -24,27 +23,15 @@ public class HandledTicketHistoryController {
 
     private ServiceManager serviceManager;
     private MainViewController mainViewController;
-
     private Ticket ticketHistory;
 
     private final ObservableList<HandledTicket> handledTickets = FXCollections.observableArrayList();
 
-    // --- TableView + columns from your FXML ---
     @FXML private TableView<HandledTicket> handleTicketsHistoryTableview;
     @FXML private TableColumn<HandledTicket, String> handledByColumn;
     @FXML private TableColumn<HandledTicket, String> commentColumn;
-
-    /**
-     * NOTE:
-     * Your current FXML Ticket Info labels do not have fx:id's, so we can't update them from code.
-     * Add fx:id's in FXML (recommended) and these will work automatically.
-     *
-     * Example in FXML:
-     * <Label fx:id="subjectLabel" text="Subject: " />
-     */
     @FXML private Label subjectLabel;
     @FXML private Label reportedByLabel;
-    @FXML private Label reporterEmailLabel;
     @FXML private Label priorityLabel;
     @FXML private Label deadlineLabel;
     @FXML private Label descriptionLabel;
@@ -102,12 +89,12 @@ public class HandledTicketHistoryController {
         renderTicketInfo(ticketHistory);
     }
 
-    public void onUpdateTicketButtonClick(ActionEvent event) {
+    public void onUpdateTicketButtonClick() {
         if (ticketHistory == null) return;
         mainViewController.showUpdateTicket(ticketHistory);
     }
 
-    public void onCancelHistoryButtonClick(ActionEvent event) {
+    public void onCancelHistoryButtonClick() {
         mainViewController.showTickets();
     }
 

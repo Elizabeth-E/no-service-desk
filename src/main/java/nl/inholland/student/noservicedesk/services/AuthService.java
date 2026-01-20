@@ -3,7 +3,6 @@ package nl.inholland.student.noservicedesk.services;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import nl.inholland.student.noservicedesk.Models.User;
 import nl.inholland.student.noservicedesk.database.UserRepository;
-import org.bson.Document;
 
 public class AuthService {
     private UserRepository userRepository;

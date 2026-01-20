@@ -42,7 +42,7 @@ public class LoginController {
 
                 MainViewController main = loader.getController();
 
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 main.setStage(stage);
                 main.setServiceManager(serviceManager);
 
@@ -61,7 +61,7 @@ public class LoginController {
         }
     }
 
-    public void onLoginCancelButtonClick(ActionEvent event) {
+    public void onLoginCancelButtonClick() {
         stage.close();
     }
 }

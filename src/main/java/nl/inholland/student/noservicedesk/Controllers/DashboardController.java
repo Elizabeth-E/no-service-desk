@@ -1,15 +1,11 @@
 package nl.inholland.student.noservicedesk.Controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 import nl.inholland.student.noservicedesk.Models.Ticket;
 import nl.inholland.student.noservicedesk.Models.User;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
-import nl.inholland.student.noservicedesk.services.TicketService;
 
-import java.io.IOException;
 import java.util.List;
 
 public class DashboardController {

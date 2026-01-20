@@ -43,7 +43,7 @@ public class UpdateTicketController {
         ticketPriorities.getItems().setAll(Priority.values());
         followUpDeadline.getItems().setAll("1","2","3","4","5","6","7");
 
-        // Lock unchangeable fields (still visible, not editable)
+        // Lock unchangeable fields
         ticketSubjects.setEditable(false);
         ticketSubjects.setMouseTransparent(true);
         ticketSubjects.setFocusTraversable(false);
@@ -55,8 +55,6 @@ public class UpdateTicketController {
         reporterEmail.setEditable(false);
         reporterEmail.setMouseTransparent(true);
         reporterEmail.setFocusTraversable(false);
-
-        // Removed subject listener so subject cannot be changed
 
         ticketPriorities.valueProperty().addListener((obs, oldV, newV) -> {
             if (currentTicket != null && newV != null) {
@@ -182,7 +180,7 @@ public class UpdateTicketController {
                 .map(User::getEmail_address)
                 .findFirst();
     }
-    public void onCancelButtonClick(ActionEvent event) {
+    public void onCancelButtonClick() {
         mainViewController.showTickets();
     }
 

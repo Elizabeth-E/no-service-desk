@@ -1,7 +1,6 @@
 package nl.inholland.student.noservicedesk.Controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
@@ -12,7 +11,6 @@ import nl.inholland.student.noservicedesk.Models.Role;
 import nl.inholland.student.noservicedesk.Models.User;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import static nl.inholland.student.noservicedesk.Controllers.AlertHelper.showAlert;
@@ -98,7 +96,7 @@ public class UpdateUserController {
         }
     }
 
-    public void onUpdateUserButtonClick(ActionEvent event) {
+    public void onUpdateUserButtonClick() {
         if (selectedUser == null) return;
 
         try {
@@ -130,7 +128,7 @@ public class UpdateUserController {
         }
     }
 
-    public void onCancelButtonClick(ActionEvent event) {
+    public void onCancelButtonClick() {
         mainViewController.showUserManagement();
     }
 }

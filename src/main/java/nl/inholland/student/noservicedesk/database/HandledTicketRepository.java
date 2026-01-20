@@ -26,25 +26,22 @@ public class HandledTicketRepository {
         if (handledTicket.getTicketId() == null) throw new IllegalArgumentException("ticketId cannot be null");
         if (handledTicket.getHandledBy() == null) throw new IllegalArgumentException("handledBy cannot be null");
 
-        // Ensure ticket exists
+        // check ticket exists
         long count = tickets.countDocuments(Filters.eq("_id", handledTicket.getTicketId()));
         if (count == 0) {
             throw new IllegalArgumentException("Ticket not found for id: " + handledTicket.getTicketId());
         }
 
         Date now = Date.from(Instant.now());
-        ObjectId newHandledId = new ObjectId(); // ✅ generate a NEW id for history row
+        ObjectId newHandledId = new ObjectId();
 
         MergeOptions mergeOptions = new MergeOptions()
-                .whenMatched(MergeOptions.WhenMatched.FAIL)          // ✅ never overwrite history
-                .whenNotMatched(MergeOptions.WhenNotMatched.INSERT); // ✅ insert only
+                .whenMatched(MergeOptions.WhenMatched.FAIL)
+                .whenNotMatched(MergeOptions.WhenNotMatched.INSERT);
 
         List<Bson> pipeline = Arrays.asList(
-                // 1) Match the ticket
                 Aggregates.match(Filters.eq("_id", handledTicket.getTicketId())),
 
-                // 2) Create the handled-ticket document shape
-                // IMPORTANT: overwrite root _id with NEW handled id, so $merge inserts every time
                 Aggregates.addFields(
                         new Field<>("_id", newHandledId),
                         new Field<>("handledDate", now),
@@ -54,12 +51,12 @@ public class HandledTicketRepository {
                         new Field<>("ticket", "$$ROOT") // snapshot of ticket
                 ),
 
-                // 3) Only keep handled-ticket fields (root _id is now newHandledId)
+                //Only keep handled-ticket fields
                 Aggregates.project(Projections.fields(
                         Projections.include("_id", "handledDate", "ticketId", "handledBy", "comment", "ticket")
                 )),
 
-                // 4) Merge into HandledTicket collection
+                //Merge into HandledTicket collection
                 Aggregates.merge(handledTickets.getNamespace().getCollectionName(), mergeOptions)
         );
 

@@ -61,7 +61,7 @@ public class TicketService {
         }
         return count;
     }
-    public void createTicket(Ticket ticket) throws JsonProcessingException {
+    public void createTicket(Ticket ticket) {
         ticketRepository.insert(ticket);
     }
 
@@ -70,7 +70,7 @@ public class TicketService {
         return ticketList;
     }
 
-    public void updateTicket(Ticket ticket) throws JsonProcessingException {
+    public void updateTicket(Ticket ticket) {
         try{
             if (ticket == null) {
                 throw new IllegalArgumentException("Ticket cannot be null");
