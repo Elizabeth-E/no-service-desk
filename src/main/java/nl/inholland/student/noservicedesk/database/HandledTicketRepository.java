@@ -1,11 +1,7 @@
 package nl.inholland.student.noservicedesk.database;
 
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.Field;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Projections;
-import com.mongodb.client.model.Sorts;
+import com.mongodb.client.model.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -26,42 +22,47 @@ public class HandledTicketRepository {
         this.tickets = ticketsCollection;
         this.handledTickets = handedTicketsCollection;
     }
-
     public void insertHandledTicket(HandledTicket handledTicket) {
         if (handledTicket.getTicketId() == null) throw new IllegalArgumentException("ticketId cannot be null");
         if (handledTicket.getHandledBy() == null) throw new IllegalArgumentException("handledBy cannot be null");
 
-        // Optional safety: ensure ticket exists, otherwise pipeline writes nothing.
+        // Ensure ticket exists
         long count = tickets.countDocuments(Filters.eq("_id", handledTicket.getTicketId()));
         if (count == 0) {
             throw new IllegalArgumentException("Ticket not found for id: " + handledTicket.getTicketId());
         }
 
         Date now = Date.from(Instant.now());
+        ObjectId newHandledId = new ObjectId(); // ✅ generate a NEW id for history row
+
+        MergeOptions mergeOptions = new MergeOptions()
+                .whenMatched(MergeOptions.WhenMatched.FAIL)          // ✅ never overwrite history
+                .whenNotMatched(MergeOptions.WhenNotMatched.INSERT); // ✅ insert only
 
         List<Bson> pipeline = Arrays.asList(
-                // 1) Find the ticket
+                // 1) Match the ticket
                 Aggregates.match(Filters.eq("_id", handledTicket.getTicketId())),
 
-                // 2) Add handled-ticket fields + embed the *original* ticket as snapshot
+                // 2) Create the handled-ticket document shape
+                // IMPORTANT: overwrite root _id with NEW handled id, so $merge inserts every time
                 Aggregates.addFields(
+                        new Field<>("_id", newHandledId),
                         new Field<>("handledDate", now),
                         new Field<>("ticketId", handledTicket.getTicketId()),
                         new Field<>("handledBy", handledTicket.getHandledBy()),
                         new Field<>("comment", handledTicket.getComment() == null ? "" : handledTicket.getComment()),
-                        new Field<>("ticket", "$$ROOT") // snapshot of the ticket at this moment
+                        new Field<>("ticket", "$$ROOT") // snapshot of ticket
                 ),
 
-                // 3) Keep only the handled-ticket fields (so we don't store the ticket twice at root)
+                // 3) Only keep handled-ticket fields (root _id is now newHandledId)
                 Aggregates.project(Projections.fields(
-                        Projections.include("handledDate", "ticketId", "handledBy", "comment", "ticket")
+                        Projections.include("_id", "handledDate", "ticketId", "handledBy", "comment", "ticket")
                 )),
 
-                // 4) Write result into HandledTicket collection (each handling becomes a new record)
-                Aggregates.merge(handledTickets.getNamespace().getCollectionName())
+                // 4) Merge into HandledTicket collection
+                Aggregates.merge(handledTickets.getNamespace().getCollectionName(), mergeOptions)
         );
 
-        // Run aggregation on Ticket collection; $merge writes into HandledTicket.
         tickets.aggregate(pipeline).toCollection();
     }
 
@@ -87,7 +88,7 @@ public class HandledTicketRepository {
     private HandledTicket fromDocument(Document doc) {
         HandledTicket ht = new HandledTicket();
 
-        ht.set_Id(doc.getObjectId("_id"));
+        ht.set_id(doc.getObjectId("_id"));
         ht.setTicketId(doc.getObjectId("ticketId"));
         ht.setHandledBy(doc.getObjectId("handledBy"));
         ht.setComment(doc.getString("comment"));

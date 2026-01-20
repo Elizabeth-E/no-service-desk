@@ -121,4 +121,19 @@ public class UserRepository {
         DeleteResult result = userCollection.deleteOne(eq("email_address", email));
         return result.getDeletedCount() > 0;
     }
+    public User getUserById(ObjectId userId) {
+        if (userId == null) return null;
+
+        Document doc = userCollection.find(eq("_id", userId)).first();
+        if (doc == null) return null;
+
+        // Normalize Mongo ObjectId -> String for your model
+        doc.put("_id", doc.getObjectId("_id").toHexString());
+
+        try {
+            return objectMapper.readValue(doc.toJson(), User.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to map User from MongoDB", e);
+        }
+    }
 }

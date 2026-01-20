@@ -2,6 +2,7 @@ package nl.inholland.student.noservicedesk.services;
 
 import nl.inholland.student.noservicedesk.Models.User;
 import nl.inholland.student.noservicedesk.database.UserRepository;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -26,6 +27,10 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public User getUserById(ObjectId id) {
+        User foundUser = userRepository.getUserById(id);
+        return foundUser;
+    }
     public User createNewUser(User user) {
         String hashPass = authService.hash(user.getPassword());
         user.setPassword(hashPass);

@@ -10,10 +10,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import nl.inholland.student.noservicedesk.Models.HandledTicket;
 import nl.inholland.student.noservicedesk.Models.Ticket;
+import nl.inholland.student.noservicedesk.Models.User;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
+import org.bson.types.ObjectId;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class HandledTicketHistoryController {
@@ -45,15 +49,17 @@ public class HandledTicketHistoryController {
     @FXML private Label deadlineLabel;
     @FXML private Label descriptionLabel;
 
+    private final Map<ObjectId, String> userNameCache = new HashMap<>();
+
     @FXML
     private void initialize() {
         handleTicketsHistoryTableview.setItems(handledTickets);
 
-        handledByColumn.setCellValueFactory(cell ->
-                new SimpleStringProperty(
-                        cell.getValue().getHandledBy() == null ? "" : cell.getValue().getHandledBy().toHexString()
-                )
-        );
+        handledByColumn.setCellValueFactory(cell -> {
+            ObjectId id = cell.getValue().getHandledBy();
+            String name = (id == null) ? "" : userNameCache.getOrDefault(id, "(unknown)");
+            return new SimpleStringProperty(name);
+        });
 
         commentColumn.setCellValueFactory(cell ->
                 new SimpleStringProperty(Optional.ofNullable(cell.getValue().getComment()).orElse(""))
@@ -72,8 +78,18 @@ public class HandledTicketHistoryController {
         this.ticketHistory = ticketHistory;
 
         List<HandledTicket> results = serviceManager.getHandledTicketsService().getHandledTicketHistory(ticketHistory);
-        handledTickets.setAll(results);
 
+        userNameCache.clear();
+        for (HandledTicket ht : results) {
+            ObjectId id = ht.getHandledBy();
+            if (id != null && !userNameCache.containsKey(id)) {
+                User u = serviceManager.getUserService().getUserById(id);
+                String name = (u == null) ? "(unknown)" : u.getFullName();
+                userNameCache.put(id, name);
+            }
+        }
+
+        handledTickets.setAll(results);
         renderTicketInfo(ticketHistory);
     }
 

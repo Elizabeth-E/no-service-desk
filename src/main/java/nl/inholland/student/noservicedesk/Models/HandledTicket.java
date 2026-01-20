@@ -28,11 +28,11 @@ public class HandledTicket {
     private ObjectId handledBy;
     private String comment;
 
-    public ObjectId get_Id() {
+    public ObjectId get_id() {
         return _id;
     }
 
-    public void set_Id(ObjectId id) {
+    public void set_id(ObjectId id) {
         this._id = _id;
     }
 
