@@ -23,7 +23,7 @@
                                 <Font size="16.0" />
                             </font>
                         </TextField>
-                        <Button mnemonicParsing="false" style="-fx-background-color: DODGERBLUE;" text="Add New User" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#onAddUserButtonClick" style="-fx-background-color: DODGERBLUE;" text="Add New User" textFill="WHITE">
                             <font>
                                 <Font size="16.0" />
                             </font>
@@ -38,14 +38,34 @@
                 </HBox>
                 <TableView fx:id="userTableview">
                     <columns>
-                        <TableColumn fx:id="idColumn" text="ID" prefWidth="60" />
-                        <TableColumn fx:id="firstNameColumn" text="First Name" prefWidth="120" />
-                        <TableColumn fx:id="lastNameColumn" text="Last Name" prefWidth="120" />
-                        <TableColumn fx:id="emailAddressColumn" text="Email" prefWidth="200" />
-                        <TableColumn fx:id="locationColumn" text="Location" prefWidth="120" />
-                        <TableColumn fx:id="phoneColumn" text="Phone" prefWidth="120" />
+                        <TableColumn fx:id="idColumn" prefWidth="60" text="ID" />
+                        <TableColumn fx:id="firstNameColumn" prefWidth="120" text="First Name" />
+                        <TableColumn fx:id="lastNameColumn" prefWidth="120" text="Last Name" />
+                        <TableColumn fx:id="emailAddressColumn" prefWidth="200" text="Email" />
+                        <TableColumn fx:id="locationColumn" prefWidth="120" text="Location" />
+                        <TableColumn fx:id="phoneColumn" prefWidth="120" text="Phone" />
                     </columns>
                 </TableView>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onDeleteUserButtonClick" style="-fx-background-color: LIGHTPINK;" text="delete user">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onUpdateUserButtonClick" style="-fx-background-color: DODGERBLUE;" text="update user" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
             </children>
             <padding>
                 <Insets left="20.0" right="20.0" />

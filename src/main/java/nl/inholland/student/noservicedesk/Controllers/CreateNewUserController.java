@@ -113,8 +113,7 @@ public class CreateNewUserController {
     }
 
     public void onCancelButtonClick(ActionEvent event) {
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
+        mainViewController.showTickets();
     }
 
     private void clearUserInput() {

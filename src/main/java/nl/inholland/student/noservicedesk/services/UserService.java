@@ -1,5 +1,6 @@
 package nl.inholland.student.noservicedesk.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import nl.inholland.student.noservicedesk.Models.User;
 import nl.inholland.student.noservicedesk.database.UserRepository;
 import org.bson.types.ObjectId;
@@ -35,6 +36,14 @@ public class UserService {
         String hashPass = authService.hash(user.getPassword());
         user.setPassword(hashPass);
         return userRepository.createUser(user);
+    }
+
+    public void deleteUser(ObjectId id) throws JsonProcessingException {
+       userRepository.deleteUserById(id);
+    }
+
+    public void updateUser(User user) throws JsonProcessingException {
+        userRepository.update(user);
     }
 
 }

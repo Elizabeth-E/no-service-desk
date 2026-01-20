@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import nl.inholland.student.noservicedesk.Models.User;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -95,32 +96,11 @@ public class UserRepository {
         return user;
     }
 
-    /**
-     * Deletes user by Mongo ObjectId string. Returns true if a user was deleted.
-     */
-    public boolean deleteUserById(String id) {
-        if (id == null || id.isBlank()) return false;
 
-        ObjectId objectId;
-        try {
-            objectId = new ObjectId(id);
-        } catch (IllegalArgumentException ex) {
-            return false; // invalid ObjectId string
-        }
-
-        DeleteResult result = userCollection.deleteOne(eq("_id", objectId));
-        return result.getDeletedCount() > 0;
+    public void deleteUserById(ObjectId id) throws JsonProcessingException {
+        userCollection.deleteOne(eq("_id", id));
     }
 
-    /**
-     * Deletes user by email address. Returns true if a user was deleted.
-     */
-    public boolean deleteUserByEmail(String email) {
-        if (email == null || email.isBlank()) return false;
-
-        DeleteResult result = userCollection.deleteOne(eq("email_address", email));
-        return result.getDeletedCount() > 0;
-    }
     public User getUserById(ObjectId userId) {
         if (userId == null) return null;
 
@@ -136,4 +116,25 @@ public class UserRepository {
             throw new RuntimeException("Failed to map User from MongoDB", e);
         }
     }
+
+    public UpdateResult update(User user) {
+        if (user == null || user.get_id() == null) {
+            throw new IllegalArgumentException("User and user _id cannot be null");
+        }
+
+        Document updatedFields = new Document();
+
+        updatedFields.put("first_name", user.getFirst_name());
+        updatedFields.put("last_name", user.getLast_name());
+        updatedFields.put("role", user.getRole());
+        updatedFields.put("email_address", user.getEmail_address());
+        updatedFields.put("location", user.getLocation());
+        updatedFields.put("phone", user.getPhone());
+
+        return userCollection.updateOne(
+                eq("_id", user.get_id()),
+                new Document("$set", updatedFields)
+        );
+    }
+
 }

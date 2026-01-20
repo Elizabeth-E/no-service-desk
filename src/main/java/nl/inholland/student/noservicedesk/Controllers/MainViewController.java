@@ -96,6 +96,17 @@ public class MainViewController {
         if (stage != null) stage.setTitle("Create Ticket");
     }
     @FXML
+    public void showUpdateUser(User user) {
+        setCenter("UpdateUser-view.fxml", controller -> {
+            if (controller instanceof UpdateUserController usc) {
+                usc.setServiceManager(serviceManager);
+                usc.setMainViewController(this);
+                usc.buildUpdateUserForm(user);
+            }
+        });
+        if (stage != null) stage.setTitle("Create Ticket");
+    }
+    @FXML
     public void showUpdateTicket(Ticket ticket) {
         setCenter("UpdateTicket-view.fxml", controller -> {
             if (controller instanceof UpdateTicketController utc) {

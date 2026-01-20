@@ -120,4 +120,7 @@ public class CreateNewTicketController {
         ticketDescription.clear();
     }
 
+    public void onCancelNewTicketButtonClick(ActionEvent event) {
+        mainViewController.showTickets();
+    }
 }

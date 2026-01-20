@@ -21,6 +21,7 @@ public class LoginController {
     @FXML private Label errorLabel;
 
     private ServiceManager serviceManager;
+    private Stage stage;
 
     public void setServiceManager(ServiceManager serviceManager) {
         this.serviceManager = serviceManager;
@@ -58,5 +59,9 @@ public class LoginController {
         } catch (Exception e) {
             errorLabel.setText("Login failed: " + e.getMessage());
         }
+    }
+
+    public void onLoginCancelButtonClick(ActionEvent event) {
+        stage.close();
     }
 }

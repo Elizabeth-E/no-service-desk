@@ -109,7 +109,7 @@
    <bottom>
       <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" style="-fx-background-color: SALMON;" text="cancel" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#onCancelNewTicketButtonClick" style="-fx-background-color: SALMON;" text="cancel" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>

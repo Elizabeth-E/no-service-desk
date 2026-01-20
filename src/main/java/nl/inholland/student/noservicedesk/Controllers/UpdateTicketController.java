@@ -2,12 +2,10 @@ package nl.inholland.student.noservicedesk.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 import nl.inholland.student.noservicedesk.Models.*;
 import nl.inholland.student.noservicedesk.services.ServiceManager;
 import nl.inholland.student.noservicedesk.services.TicketService;
@@ -133,6 +131,7 @@ public class UpdateTicketController {
                     "Ticket Updated!",
                     "Ticket successfully updated."
             );
+            mainViewController.showTicketHistory(currentTicket);
         } catch (Exception e) {
             showAlert(
                     javafx.scene.control.Alert.AlertType.ERROR,

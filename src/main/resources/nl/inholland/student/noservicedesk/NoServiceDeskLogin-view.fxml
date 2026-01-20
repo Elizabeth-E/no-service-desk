@@ -71,7 +71,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="cancel">
+            <Button mnemonicParsing="false" onAction="#onLoginCancelButtonClick" text="cancel">
                <font>
                   <Font size="18.0" />
                </font>
